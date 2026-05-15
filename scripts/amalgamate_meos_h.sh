@@ -30,6 +30,13 @@ mkdir -p "$(dirname "$OUT")"
 # TimestampTz, int64, …) that the rest reference; the per-type headers
 # follow, and meos.h itself ends up after the postgres preamble so the
 # public surface is parseable.
+#
+# The h3/h3index.h and h3/h3index_sets.h headers live under meos/include/h3/
+# (not directly under meos/include/) because their primary consumers are
+# internal-style call sites in mobilitydb/src/h3/. Their declared symbols
+# are however purely public (no Datum / MeosType in signatures) and are
+# required by Th3IndexUDFs.java in MobilitySpark for the static h3index
+# and h3indexset surfaces.
 cat \
     "$MEOS_INCLUDE/postgres_ext_defs.in.h" \
     "$MEOS_INCLUDE/postgres_int_defs.h" \
@@ -39,7 +46,25 @@ cat \
     "$MEOS_INCLUDE/meos_npoint.h" \
     "$MEOS_INCLUDE/meos_pose.h" \
     "$MEOS_INCLUDE/meos_rgeo.h" \
-    > "$OUT"
+    "$MEOS_INCLUDE/meos_h3.h" \
+    "$MEOS_INCLUDE/h3/h3index.h" \
+    "$MEOS_INCLUDE/h3/h3index_sets.h" \
+    > "$OUT.raw"
+
+# The JMEOS FunctionsExtractor matches `extern` declarations line-by-line
+# with a regex that requires the closing `);` on the same line. MEOS
+# headers wrap long declarations onto a continuation line for readability.
+# Collapse multi-line extern decls into single-line form so the extractor
+# picks them all up. A continuation line is any line that does not start
+# with `extern`, `#`, `//`, `/*`, `}` and ends with `,` or open-paren-context
+# of an in-progress `extern` declaration.
+perl -0777 -pe '
+  # Iteratively collapse continuation lines into their parent extern decl.
+  # An in-progress extern decl is text starting with "extern " that has not
+  # yet hit a terminating ";". Each pass joins one continuation line.
+  1 while s/(^extern\s[^;\n]*)\n\s+/$1 /smg;
+' "$OUT.raw" > "$OUT"
+rm "$OUT.raw"
 
 # Appended decls — these symbols are exported from libmeos.so but live
 # either with no prototype at all (acovers_tgeo_*) or in MEOS private
@@ -60,6 +85,7 @@ extern Temporal **tnumber_value_split(const Temporal *temp, Datum vsize, Datum v
 extern Temporal **tnumber_value_time_split(const Temporal *temp, Datum size, const Interval *duration, Datum vorigin, TimestampTz torigin, Datum **value_bins, TimestampTz **time_bins, int *count);
 extern TBox *tnumber_value_time_boxes(const Temporal *temp, Datum vsize, const Interval *duration, Datum vorigin, TimestampTz torigin, int *count);
 extern TBox *tbox_get_value_time_tile(Datum value, TimestampTz t, Datum vsize, const Interval *duration, Datum vorigin, TimestampTz torigin, MeosType basetype, MeosType spantype);
+extern void meos_initialize_noexit_error_handler(void);
 EOF
 
 extern_count=$(grep -c '^extern' "$OUT")

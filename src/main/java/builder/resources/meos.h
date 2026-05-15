@@ -439,7 +439,6 @@ typedef void (*error_handler_fn)(int, int, const char *);
 
 extern void meos_initialize_timezone(const char *name);
 extern void meos_initialize_error_handler(error_handler_fn err_handler);
-extern void meos_initialize_noexit_error_handler(void);
 extern void meos_finalize_timezone(void);
 extern void meos_finalize_projsrs(void);
 extern void meos_finalize_ways(void);
@@ -582,8 +581,10 @@ extern Span *tstzspan_make(TimestampTz lower, TimestampTz upper, bool lower_inc,
  *****************************************************************************/
 
 extern Set *bigint_to_set(int64 i);
-extern Span *bigint_to_span(int i);
-extern SpanSet *bigint_to_spanset(int i);
+extern Span *bigint_to_span(int64 i);
+extern SpanSet *bigint_to_spanset(int64 i);
+extern Span *bigintspan_to_intspan(const Span *s);
+extern Span *bigintspan_to_floatspan(const Span *s);
 extern Set *date_to_set(DateADT d);
 extern Span *date_to_span(DateADT d);
 extern SpanSet *date_to_spanset(DateADT d);
@@ -594,12 +595,14 @@ extern Set *float_to_set(double d);
 extern Span *float_to_span(double d);
 extern SpanSet *float_to_spanset(double d);
 extern Set *floatset_to_intset(const Set *s);
+extern Span *floatspan_to_bigintspan(const Span *s);
 extern Span *floatspan_to_intspan(const Span *s);
 extern SpanSet *floatspanset_to_intspanset(const SpanSet *ss);
 extern Set *int_to_set(int i);
 extern Span *int_to_span(int i);
 extern SpanSet *int_to_spanset(int i);
 extern Set *intset_to_floatset(const Set *s);
+extern Span *intspan_to_bigintspan(const Span *s);
 extern Span *intspan_to_floatspan(const Span *s);
 extern SpanSet *intspanset_to_floatspanset(const SpanSet *ss);
 extern Span *set_to_span(const Set *s);
@@ -1225,6 +1228,7 @@ extern TBox *int_to_tbox(int i);
 extern TBox *set_to_tbox(const Set *s);
 extern TBox *span_to_tbox(const Span *s);
 extern TBox *spanset_to_tbox(const SpanSet *ss);
+extern Span *tbox_to_bigintspan(const TBox *box);
 extern Span *tbox_to_intspan(const TBox *box);
 extern Span *tbox_to_floatspan(const TBox *box);
 extern Span *tbox_to_tstzspan(const TBox *box);
@@ -1255,6 +1259,8 @@ extern bool tboxint_xmin(const TBox *box, int *result);
  * Transformation functions for box types
  *****************************************************************************/
 
+extern TBox *tbigintbox_expand(const TBox *box, int64 i);
+extern TBox *tbigintbox_shift_scale(const TBox *box, int64 shift, int64 width, bool hasshift, bool haswidth);
 extern TBox *tbox_expand_time(const TBox *box, const Interval *interv);
 extern TBox *tbox_round(const TBox *box, int maxdd);
 extern TBox *tbox_shift_scale_time(const TBox *box, const Interval *shift, const Interval *duration);
@@ -1315,6 +1321,9 @@ extern bool tbox_ne(const TBox *box1, const TBox *box2);
  * Input and output functions for temporal types
  *****************************************************************************/
 
+extern Temporal *tbigint_from_mfjson(const char *str);
+extern Temporal *tbigint_in(const char *str);
+extern char *tbigint_out(const Temporal *temp);
 extern Temporal *tbool_from_mfjson(const char *str);
 extern Temporal *tbool_in(const char *str);
 extern char *tbool_out(const Temporal *temp);
@@ -1337,6 +1346,11 @@ extern char *ttext_out(const Temporal *temp);
  * Constructor functions for temporal types
  *****************************************************************************/
 
+extern Temporal *tbigint_from_base_temp(int64 i, const Temporal *temp);
+extern TInstant *tbigintinst_make(int64 i, TimestampTz t);
+extern TSequence *tbigintseq_from_base_tstzset(int64 i, const Set *s);
+extern TSequence *tbigintseq_from_base_tstzspan(int64 i, const Span *s);
+extern TSequenceSet *tbigintseqset_from_base_tstzspanset(int64 i, const SpanSet *ss);
 extern Temporal *tbool_from_base_temp(bool b, const Temporal *temp);
 extern TInstant *tboolinst_make(bool b, TimestampTz t);
 extern TSequence *tboolseq_from_base_tstzset(bool b, const Set *s);
@@ -1366,9 +1380,13 @@ extern TSequenceSet *ttextseqset_from_base_tstzspanset(const text *txt, const Sp
  * Conversion functions for temporal types
  *****************************************************************************/
 
+extern Temporal *tbigint_to_tfloat(const Temporal *temp);
+extern Temporal *tbigint_to_tint(const Temporal *temp);
 extern Temporal *tbool_to_tint(const Temporal *temp);
 extern Span *temporal_to_tstzspan(const Temporal *temp);
+extern Temporal *tfloat_to_tbigint(const Temporal *temp);
 extern Temporal *tfloat_to_tint(const Temporal *temp);
+extern Temporal *tint_to_tbigint(const Temporal *temp);
 extern Temporal *tint_to_tfloat(const Temporal *temp);
 extern Span *tnumber_to_span(const Temporal *temp);
 extern TBox *tnumber_to_tbox (const Temporal *temp);
@@ -1377,6 +1395,13 @@ extern TBox *tnumber_to_tbox (const Temporal *temp);
  * Accessor functions for temporal types
  *****************************************************************************/
 
+extern int64 tbigint_end_value(const Temporal *temp);
+extern int64 tbigint_max_value(const Temporal *temp);
+extern int64 tbigint_min_value(const Temporal *temp);
+extern int64 tbigint_start_value(const Temporal *temp);
+extern bool tbigint_value_at_timestamptz(const Temporal *temp, TimestampTz t, bool strict, int64 *value);
+extern bool tbigint_value_n(const Temporal *temp, int64 n, int64 *result);
+extern int64 *tbigint_values(const Temporal *temp, int32 *count);
 extern bool tbool_end_value(const Temporal *temp);
 extern bool tbool_start_value(const Temporal *temp);
 extern bool tbool_value_at_timestamptz(const Temporal *temp, TimestampTz t, bool strict, bool *value);
@@ -1441,6 +1466,9 @@ extern text **ttext_values(const Temporal *temp, int *count);
  *****************************************************************************/
 
 extern double float_degrees(double value, bool normalize);
+extern Temporal *tbigint_scale_value(const Temporal *temp, int64 width);
+extern Temporal *tbigint_shift_scale_value(const Temporal *temp, int64 shift, int64 width);
+extern Temporal *tbigint_shift_value(const Temporal *temp, int64 shift);
 extern Temporal **temparr_round(Temporal **temp, int count, int maxdd);
 extern Temporal *temporal_round(const Temporal *temp, int maxdd);
 extern Temporal *temporal_scale_time(const Temporal *temp, const Interval *duration);
@@ -1480,6 +1508,8 @@ extern Temporal *temporal_update(const Temporal *temp1, const Temporal *temp2, b
  * Restriction functions for temporal types
  *****************************************************************************/
 
+extern Temporal *tbigint_at_value(const Temporal *temp, int64 i);
+extern Temporal *tbigint_minus_value(const Temporal *temp, int64 i);
 extern Temporal *tbool_at_value(const Temporal *temp, bool b);
 extern Temporal *tbool_minus_value(const Temporal *temp, bool b);
 extern Temporal *temporal_after_timestamptz(const Temporal *temp, TimestampTz t, bool strict);
@@ -1529,36 +1559,49 @@ extern bool temporal_ne(const Temporal *temp1, const Temporal *temp2);
 
 /* Ever and always comparison functions for temporal types */
 
+extern int always_eq_bigint_tbigint(int64 i, const Temporal *temp);
 extern int always_eq_bool_tbool(bool b, const Temporal *temp);
 extern int always_eq_float_tfloat(double d, const Temporal *temp);
 extern int always_eq_int_tint(int i, const Temporal *temp);
 extern int always_eq_tbool_bool(const Temporal *temp, bool b);
 extern int always_eq_temporal_temporal(const Temporal *temp1, const Temporal *temp2);
 extern int always_eq_text_ttext(const text *txt, const Temporal *temp);
+extern int always_eq_tbigint_bigint(const Temporal *temp, int64 i);
 extern int always_eq_tfloat_float(const Temporal *temp, double d);
 extern int always_eq_tint_int(const Temporal *temp, int i);
 extern int always_eq_ttext_text(const Temporal *temp, const text *txt);
+
+extern int always_ge_bigint_tbigint(int64 i, const Temporal *temp);
 extern int always_ge_float_tfloat(double d, const Temporal *temp);
 extern int always_ge_int_tint(int i, const Temporal *temp);
+extern int always_ge_tbigint_bigint(const Temporal *temp, int64 i);
 extern int always_ge_temporal_temporal(const Temporal *temp1, const Temporal *temp2);
 extern int always_ge_text_ttext(const text *txt, const Temporal *temp);
 extern int always_ge_tfloat_float(const Temporal *temp, double d);
 extern int always_ge_tint_int(const Temporal *temp, int i);
 extern int always_ge_ttext_text(const Temporal *temp, const text *txt);
+
+extern int always_gt_bigint_tbigint(int64 i, const Temporal *temp);
 extern int always_gt_float_tfloat(double d, const Temporal *temp);
 extern int always_gt_int_tint(int i, const Temporal *temp);
+extern int always_gt_tbigint_bigint(const Temporal *temp, int64 i);
 extern int always_gt_temporal_temporal(const Temporal *temp1, const Temporal *temp2);
 extern int always_gt_text_ttext(const text *txt, const Temporal *temp);
 extern int always_gt_tfloat_float(const Temporal *temp, double d);
 extern int always_gt_tint_int(const Temporal *temp, int i);
 extern int always_gt_ttext_text(const Temporal *temp, const text *txt);
+
+extern int always_le_bigint_tbigint(int64 i, const Temporal *temp);
 extern int always_le_float_tfloat(double d, const Temporal *temp);
 extern int always_le_int_tint(int i, const Temporal *temp);
+extern int always_le_tbigint_bigint(const Temporal *temp, int64 i);
 extern int always_le_temporal_temporal(const Temporal *temp1, const Temporal *temp2);
 extern int always_le_text_ttext(const text *txt, const Temporal *temp);
 extern int always_le_tfloat_float(const Temporal *temp, double d);
 extern int always_le_tint_int(const Temporal *temp, int i);
 extern int always_le_ttext_text(const Temporal *temp, const text *txt);
+
+extern int always_lt_bigint_tbigint(int64 i, const Temporal *temp);
 extern int always_lt_float_tfloat(double d, const Temporal *temp);
 extern int always_lt_int_tint(int i, const Temporal *temp);
 extern int always_lt_temporal_temporal(const Temporal *temp1, const Temporal *temp2);
@@ -1569,52 +1612,74 @@ extern int always_lt_ttext_text(const Temporal *temp, const text *txt);
 extern int always_ne_bool_tbool(bool b, const Temporal *temp);
 extern int always_ne_float_tfloat(double d, const Temporal *temp);
 extern int always_ne_int_tint(int i, const Temporal *temp);
+extern int always_lt_tbigint_bigint(const Temporal *temp, int64 i);
+
+extern int always_ne_bigint_tbigint(int64 i, const Temporal *temp);
 extern int always_ne_tbool_bool(const Temporal *temp, bool b);
+extern int always_ne_tbigint_bigint(const Temporal *temp, int64 i);
 extern int always_ne_temporal_temporal(const Temporal *temp1, const Temporal *temp2);
 extern int always_ne_text_ttext(const text *txt, const Temporal *temp);
 extern int always_ne_tfloat_float(const Temporal *temp, double d);
 extern int always_ne_tint_int(const Temporal *temp, int i);
 extern int always_ne_ttext_text(const Temporal *temp, const text *txt);
+
+extern int ever_eq_bigint_tbigint(int64 i, const Temporal *temp);
 extern int ever_eq_bool_tbool(bool b, const Temporal *temp);
 extern int ever_eq_float_tfloat(double d, const Temporal *temp);
 extern int ever_eq_int_tint(int i, const Temporal *temp);
+extern int ever_eq_tbigint_bigint(const Temporal *temp, int64 i);
 extern int ever_eq_tbool_bool(const Temporal *temp, bool b);
 extern int ever_eq_temporal_temporal(const Temporal *temp1, const Temporal *temp2);
 extern int ever_eq_text_ttext(const text *txt, const Temporal *temp);
 extern int ever_eq_tfloat_float(const Temporal *temp, double d);
 extern int ever_eq_tint_int(const Temporal *temp, int i);
 extern int ever_eq_ttext_text(const Temporal *temp, const text *txt);
+
+extern int ever_ge_bigint_tbigint(int64 i, const Temporal *temp);
 extern int ever_ge_float_tfloat(double d, const Temporal *temp);
 extern int ever_ge_int_tint(int i, const Temporal *temp);
+extern int ever_ge_tbigint_bigint(const Temporal *temp, int64 i);
 extern int ever_ge_temporal_temporal(const Temporal *temp1, const Temporal *temp2);
 extern int ever_ge_text_ttext(const text *txt, const Temporal *temp);
 extern int ever_ge_tfloat_float(const Temporal *temp, double d);
 extern int ever_ge_tint_int(const Temporal *temp, int i);
 extern int ever_ge_ttext_text(const Temporal *temp, const text *txt);
+
+extern int ever_gt_bigint_tbigint(int64 i, const Temporal *temp);
 extern int ever_gt_float_tfloat(double d, const Temporal *temp);
 extern int ever_gt_int_tint(int i, const Temporal *temp);
+extern int ever_gt_tbigint_bigint(const Temporal *temp, int64 i);
 extern int ever_gt_temporal_temporal(const Temporal *temp1, const Temporal *temp2);
 extern int ever_gt_text_ttext(const text *txt, const Temporal *temp);
 extern int ever_gt_tfloat_float(const Temporal *temp, double d);
 extern int ever_gt_tint_int(const Temporal *temp, int i);
 extern int ever_gt_ttext_text(const Temporal *temp, const text *txt);
+
+extern int ever_le_bigint_tbigint(int64 i, const Temporal *temp);
 extern int ever_le_float_tfloat(double d, const Temporal *temp);
 extern int ever_le_int_tint(int i, const Temporal *temp);
+extern int ever_le_tbigint_bigint(const Temporal *temp, int64 i);
 extern int ever_le_temporal_temporal(const Temporal *temp1, const Temporal *temp2);
 extern int ever_le_text_ttext(const text *txt, const Temporal *temp);
 extern int ever_le_tfloat_float(const Temporal *temp, double d);
 extern int ever_le_tint_int(const Temporal *temp, int i);
 extern int ever_le_ttext_text(const Temporal *temp, const text *txt);
+
+extern int ever_lt_bigint_tbigint(int64 i, const Temporal *temp);
 extern int ever_lt_float_tfloat(double d, const Temporal *temp);
 extern int ever_lt_int_tint(int i, const Temporal *temp);
+extern int ever_lt_tbigint_bigint(const Temporal *temp, int64 i);
 extern int ever_lt_temporal_temporal(const Temporal *temp1, const Temporal *temp2);
 extern int ever_lt_text_ttext(const text *txt, const Temporal *temp);
 extern int ever_lt_tfloat_float(const Temporal *temp, double d);
 extern int ever_lt_tint_int(const Temporal *temp, int i);
 extern int ever_lt_ttext_text(const Temporal *temp, const text *txt);
+
+extern int ever_ne_bigint_tbigint(int64 i, const Temporal *temp);
 extern int ever_ne_bool_tbool(bool b, const Temporal *temp);
 extern int ever_ne_float_tfloat(double d, const Temporal *temp);
 extern int ever_ne_int_tint(int i, const Temporal *temp);
+extern int ever_ne_tbigint_bigint(const Temporal *temp, int64 i);
 extern int ever_ne_tbool_bool(const Temporal *temp, bool b);
 extern int ever_ne_temporal_temporal(const Temporal *temp1, const Temporal *temp2);
 extern int ever_ne_text_ttext(const text *txt, const Temporal *temp);
@@ -1795,23 +1860,31 @@ extern Temporal *tor_tbool_tbool(const Temporal *temp1, const Temporal *temp2);
  * Mathematical functions for temporal types
  *****************************************************************************/
 
+extern Temporal *add_bigint_tbigint(int64 i, const Temporal *tnumber);
 extern Temporal *add_float_tfloat(double d, const Temporal *tnumber);
 extern Temporal *add_int_tint(int i, const Temporal *tnumber);
+extern Temporal *add_tbigint_bigint(const Temporal *tnumber, int64 i);
 extern Temporal *add_tfloat_float(const Temporal *tnumber, double d);
 extern Temporal *add_tint_int(const Temporal *tnumber, int i);
 extern Temporal *add_tnumber_tnumber(const Temporal *tnumber1, const Temporal *tnumber2);
+extern Temporal *div_bigint_tbigint(int64 i, const Temporal *tnumber);
 extern Temporal *div_float_tfloat(double d, const Temporal *tnumber);
 extern Temporal *div_int_tint(int i, const Temporal *tnumber);
+extern Temporal *div_tbigint_bigint(const Temporal *tnumber, int64 i);
 extern Temporal *div_tfloat_float(const Temporal *tnumber, double d);
 extern Temporal *div_tint_int(const Temporal *tnumber, int i);
 extern Temporal *div_tnumber_tnumber(const Temporal *tnumber1, const Temporal *tnumber2);
+extern Temporal *mult_bigint_tbigint(int64 i, const Temporal *tnumber);
 extern Temporal *mult_float_tfloat(double d, const Temporal *tnumber);
 extern Temporal *mult_int_tint(int i, const Temporal *tnumber);
+extern Temporal *mult_tbigint_bigint(const Temporal *tnumber, int64 i);
 extern Temporal *mult_tfloat_float(const Temporal *tnumber, double d);
 extern Temporal *mult_tint_int(const Temporal *tnumber, int i);
 extern Temporal *mult_tnumber_tnumber(const Temporal *tnumber1, const Temporal *tnumber2);
+extern Temporal *sub_bigint_tbigint(int64 i, const Temporal *tnumber);
 extern Temporal *sub_float_tfloat(double d, const Temporal *tnumber);
 extern Temporal *sub_int_tint(int i, const Temporal *tnumber);
+extern Temporal *sub_tbigint_bigint(const Temporal *tnumber, int64 i);
 extern Temporal *sub_tfloat_float(const Temporal *tnumber, double d);
 extern Temporal *sub_tint_int(const Temporal *tnumber, int i);
 extern Temporal *sub_tnumber_tnumber(const Temporal *tnumber1, const Temporal *tnumber2);
@@ -2284,11 +2357,9 @@ extern GSERIALIZED *geog_in(const char *str, int32 typmod);
 extern GSERIALIZED *geom_from_hexewkb(const char *wkt);
 extern GSERIALIZED *geom_in(const char *str, int32 typmod);
 
-extern BOX3D *box3d_make(double xmin, double xmax, double ymin, double ymax,
-  double zmin, double zmax, int32_t srid);
+extern BOX3D *box3d_make(double xmin, double xmax, double ymin, double ymax, double zmin, double zmax, int32_t srid);
 extern char *box3d_out(const BOX3D *box, int maxdd);
-extern GBOX *gbox_make(bool hasz, double xmin, double xmax, double ymin,
-  double ymax, double zmin, double zmax);
+extern GBOX *gbox_make(bool hasz, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax);
 extern char *gbox_out(const GBOX *box, int maxdd);
 
 /* Constructor functions */
@@ -2806,12 +2877,12 @@ extern double nad_stbox_stbox(const STBox *box1, const STBox *box2);
 extern double nad_tgeo_geo(const Temporal *temp, const GSERIALIZED *gs);
 extern double nad_tgeo_stbox(const Temporal *temp, const STBox *box);
 extern double nad_tgeo_tgeo(const Temporal *temp1, const Temporal *temp2);
-extern double mindistance_tgeo_tgeo(const Temporal *temp1, const Temporal *temp2, double threshold);
-extern double tgeoarr_tgeoarr_mindist(const Temporal **arr1, int count1, const Temporal **arr2, int count2);
 extern TInstant *nai_tgeo_geo(const Temporal *temp, const GSERIALIZED *gs);
 extern TInstant *nai_tgeo_tgeo(const Temporal *temp1, const Temporal *temp2);
 extern GSERIALIZED *shortestline_tgeo_geo(const Temporal *temp, const GSERIALIZED *gs);
 extern GSERIALIZED *shortestline_tgeo_tgeo(const Temporal *temp1, const Temporal *temp2);
+extern double tgeoarr_tgeoarr_mindist(const Temporal **arr1, int count1, const Temporal **arr2, int count2);
+extern double mindistance_tgeo_tgeo(const Temporal *temp1, const Temporal *temp2, double threshold);
 
 /* Aggregates */
 
@@ -4066,6 +4137,355 @@ extern Temporal *tne_trgeo_geo(const Temporal *temp, const GSERIALIZED *gs);
 /*****************************************************************************/
 
 #endif /* __MEOS_RGEO_H__ */
+/*****************************************************************************
+ *
+ * This MobilityDB code is provided under The PostgreSQL License.
+ * Copyright (c) 2016-2025, Université libre de Bruxelles and MobilityDB
+ * contributors
+ *
+ *****************************************************************************/
+
+/**
+ * @file
+ * @brief Public MEOS API for the temporal H3 index type (th3index).
+ *
+ * Implementations live in meos/src/h3/. The PG V1 wrappers in
+ * mobilitydb/src/h3/ call these symbols.
+ */
+
+#ifndef __MEOS_H3_H__
+#define __MEOS_H3_H__
+
+#include <stdbool.h>
+#include <stdint.h>
+#include <h3api.h>
+#include <meos.h>
+#include <meos_geo.h>
+
+/*****************************************************************************
+ * Static h3index SQL type — analogue of meos_cbuffer.h's
+ * static-cbuffer section.
+ *****************************************************************************/
+
+extern H3Index h3index_in(const char *str);
+extern char *h3index_out(H3Index cell);
+
+/*****************************************************************************
+ * Type inheritance (analogue of meos_cbuffer.h's tcbuffer section)
+ *****************************************************************************/
+
+/* Input */
+extern Temporal *th3index_in(const char *str);
+extern TInstant *th3indexinst_in(const char *str);
+extern TSequence *th3indexseq_in(const char *str, interpType interp);
+extern TSequenceSet *th3indexseqset_in(const char *str);
+
+/* Constructors */
+extern Temporal *th3index_make(H3Index value, TimestampTz t);
+extern TInstant *th3indexinst_make(H3Index value, TimestampTz t);
+extern TSequence *th3indexseq_make(const H3Index *values, const TimestampTz *times, int count, bool lower_inc, bool upper_inc);
+extern TSequenceSet *th3indexseqset_make(const TSequence **sequences, int count);
+
+/* Accessors */
+extern H3Index th3index_start_value(const Temporal *temp);
+extern H3Index th3index_end_value(const Temporal *temp);
+extern bool th3index_value_n(const Temporal *temp, int n, H3Index *result);
+extern H3Index *th3index_values(const Temporal *temp, int *count);
+extern bool th3index_value_at_timestamptz(const Temporal *temp, TimestampTz t, bool strict, H3Index *result);
+
+/* MEOS-level conversions to/from tbigint */
+extern Temporal *tbigint_to_th3index(const Temporal *temp);
+extern Temporal *th3index_to_tbigint(const Temporal *temp);
+
+/*****************************************************************************
+ * Ever/always comparison operators
+ *****************************************************************************/
+
+extern int ever_eq_h3index_th3index(H3Index cell, const Temporal *temp);
+extern int ever_eq_th3index_h3index(const Temporal *temp, H3Index cell);
+extern int ever_ne_h3index_th3index(H3Index cell, const Temporal *temp);
+extern int ever_ne_th3index_h3index(const Temporal *temp, H3Index cell);
+extern int always_eq_h3index_th3index(H3Index cell, const Temporal *temp);
+extern int always_eq_th3index_h3index(const Temporal *temp, H3Index cell);
+extern int always_ne_h3index_th3index(H3Index cell, const Temporal *temp);
+extern int always_ne_th3index_h3index(const Temporal *temp, H3Index cell);
+extern int ever_eq_th3index_th3index(const Temporal *temp1, const Temporal *temp2);
+extern int ever_ne_th3index_th3index(const Temporal *temp1, const Temporal *temp2);
+extern int always_eq_th3index_th3index(const Temporal *temp1, const Temporal *temp2);
+extern int always_ne_th3index_th3index(const Temporal *temp1, const Temporal *temp2);
+
+/*****************************************************************************
+ * Temporal comparison operators
+ *****************************************************************************/
+
+extern Temporal *teq_h3index_th3index(H3Index cell, const Temporal *temp);
+extern Temporal *teq_th3index_h3index(const Temporal *temp, H3Index cell);
+extern Temporal *teq_th3index_th3index(const Temporal *temp1, const Temporal *temp2);
+extern Temporal *tne_h3index_th3index(H3Index cell, const Temporal *temp);
+extern Temporal *tne_th3index_h3index(const Temporal *temp, H3Index cell);
+extern Temporal *tne_th3index_th3index(const Temporal *temp1, const Temporal *temp2);
+
+/*****************************************************************************
+ * Inspection
+ *****************************************************************************/
+
+extern Temporal *th3index_get_resolution(const Temporal *temp);
+extern Temporal *th3index_get_base_cell_number(const Temporal *temp);
+extern Temporal *th3index_is_valid_cell(const Temporal *temp);
+extern Temporal *th3index_is_res_class_iii(const Temporal *temp);
+extern Temporal *th3index_is_pentagon(const Temporal *temp);
+
+/*****************************************************************************
+ * Hierarchy
+ *****************************************************************************/
+
+extern Temporal *th3index_cell_to_parent(const Temporal *temp, int32 resolution);
+extern Temporal *th3index_cell_to_parent_next(const Temporal *temp);
+extern Temporal *th3index_cell_to_center_child(const Temporal *temp, int32 resolution);
+extern Temporal *th3index_cell_to_center_child_next(const Temporal *temp);
+extern Temporal *th3index_cell_to_child_pos(const Temporal *temp, int32 parent_res);
+extern Temporal *th3index_child_pos_to_cell(const Temporal *child_pos, const Temporal *parent, int32 child_res);
+
+/*****************************************************************************
+ * Lat/Lng conversion
+ *****************************************************************************/
+
+extern Temporal *tgeogpoint_to_th3index(const Temporal *temp, int32 resolution);
+extern Temporal *tgeompoint_to_th3index(const Temporal *temp, int32 resolution);
+extern Temporal *th3index_to_tgeogpoint(const Temporal *temp);
+extern Temporal *th3index_to_tgeompoint(const Temporal *temp);
+extern Temporal *th3index_cell_to_boundary(const Temporal *temp);
+
+/* Static geometry → H3 cell / cell set.  See meos/src/h3/h3_geo.c. */
+extern H3Index h3_gs_point_to_cell(const GSERIALIZED *point, int32 resolution);
+extern Set *geo_to_h3index_set(const GSERIALIZED *gs, int32 resolution);
+extern int ever_eq_anyof_h3indexset_th3index(const Set *cells, const Temporal *th3idx);
+
+/*****************************************************************************
+ * Directed edges
+ *****************************************************************************/
+
+extern Temporal *th3index_are_neighbor_cells(const Temporal *origin, const Temporal *dest);
+extern Temporal *th3index_cells_to_directed_edge(const Temporal *origin, const Temporal *dest);
+extern Temporal *th3index_is_valid_directed_edge(const Temporal *edge);
+extern Temporal *th3index_get_directed_edge_origin(const Temporal *edge);
+extern Temporal *th3index_get_directed_edge_destination(const Temporal *edge);
+extern Temporal *th3index_directed_edge_to_boundary(const Temporal *edge);
+
+/*****************************************************************************
+ * Vertices
+ *****************************************************************************/
+
+extern Temporal *th3index_cell_to_vertex(const Temporal *temp, int32 vertex_num);
+extern Temporal *th3index_vertex_to_latlng(const Temporal *temp);
+extern Temporal *th3index_is_valid_vertex(const Temporal *temp);
+
+/*****************************************************************************
+ * Grid traversal
+ *****************************************************************************/
+
+extern Temporal *th3index_grid_distance(const Temporal *origin, const Temporal *dest);
+extern Temporal *th3index_cell_to_local_ij(const Temporal *origin, const Temporal *cell);
+extern Temporal *th3index_local_ij_to_cell(const Temporal *origin, const Temporal *coord);
+
+/*****************************************************************************
+ * Metrics
+ *****************************************************************************/
+
+extern Temporal *th3index_cell_area(const Temporal *temp, const char *unit);
+extern Temporal *th3index_edge_length(const Temporal *temp, const char *unit);
+extern Temporal *tgeogpoint_great_circle_distance(const Temporal *a, const Temporal *b, const char *unit);
+
+#endif /* __MEOS_H3_H__ */
+/*****************************************************************************
+ *
+ * This MobilityDB code is provided under The PostgreSQL License.
+ * Copyright (c) 2016-2025, Université libre de Bruxelles and MobilityDB
+ * contributors
+ *
+ *****************************************************************************/
+
+/**
+ * @file
+ * @brief Internal helpers for the static `h3index` SQL type.
+ *
+ * The static h3index type is the analogue of the static `cbuffer`
+ * type — it provides the base value that the temporal `th3index`
+ * type carries through time. Unlike `cbuffer`, h3index has no
+ * compound payload (it is a 64-bit integer cell identifier), so
+ * the helpers here are minimal:
+ *
+ *   * an input parser that accepts both decimal and hex strings,
+ *   * an output formatter (canonical form is hex, matching h3-pg),
+ *   * comparison / ordering / hashing helpers — exposed at the MEOS
+ *     layer so MobilityDuck and other consumers can reuse them
+ *     without re-implementing the int64 bit-compare logic.
+ */
+
+#ifndef __H3INDEX_H__
+#define __H3INDEX_H__
+
+#include <stdbool.h>
+#include <stdint.h>
+/* PostgreSQL — for Datum / Int64GetDatum / DatumGetInt64 */
+#include <postgres.h>
+#include <h3api.h>
+
+/*****************************************************************************
+ * Datum packing
+ *
+ * H3Index is a uint64, binary-identical to int8 in PG's Datum
+ * representation on 64-bit platforms. These macros hide the int64
+ * round-trip so call sites read as H3Index-typed.
+ *****************************************************************************/
+
+#define DatumGetH3Index(X)   ((H3Index) DatumGetInt64(X))
+#define H3IndexGetDatum(X)   Int64GetDatum((int64) (X))
+
+/*****************************************************************************
+ * Parsing / formatting
+ *****************************************************************************/
+
+/**
+ * Parse a string into an H3Index. Accepts:
+ *   * a decimal integer literal (e.g. "590464338553208831"),
+ *   * a hex string with no prefix (e.g. "8a2a1072b59ffff"), the
+ *     canonical h3-pg form,
+ *   * a hex string with the "0x" prefix (e.g. "0x8a2a1072b59ffff").
+ *
+ * Returns the parsed cell on success. Raises `meos_error(ERROR, …)`
+ * on malformed input or on a value that does not encode a valid H3
+ * cell (libh3's `isValidCell`).
+ */
+extern H3Index h3index_parse(const char *str);
+
+/**
+ * Format an H3Index into its canonical hex string (lowercase, no
+ * "0x" prefix, no leading zeros — matches h3-pg's output). The
+ * caller owns the returned `palloc`'d C string.
+ */
+extern char *h3index_to_string(H3Index cell);
+
+/*****************************************************************************
+ * Comparison / ordering / hashing
+ *
+ * H3 cell identifiers are uint64; ordering and equality fall through
+ * to plain int64 bit-compare — they carry no geographic meaning but
+ * are required for btree indexing, ORDER BY, GROUP BY, DISTINCT, etc.
+ *****************************************************************************/
+
+extern bool h3index_eq(H3Index a, H3Index b);
+extern bool h3index_ne(H3Index a, H3Index b);
+extern bool h3index_lt(H3Index a, H3Index b);
+extern bool h3index_le(H3Index a, H3Index b);
+extern bool h3index_gt(H3Index a, H3Index b);
+extern bool h3index_ge(H3Index a, H3Index b);
+extern int h3index_cmp(H3Index a, H3Index b);
+extern uint32 h3index_hash(H3Index cell);
+
+#endif /* __H3INDEX_H__ */
+/*****************************************************************************
+ *
+ * This MobilityDB code is provided under The PostgreSQL License.
+ * Copyright (c) 2016-2025, Université libre de Bruxelles and MobilityDB
+ * contributors
+ *
+ *****************************************************************************/
+
+/**
+ * @file
+ * @brief Set-returning static helpers on `h3index`.
+ *
+ * These are the MobilityDB ports of the nine h3-pg SETOF-returning
+ * functions. Each call returns a finite collection of H3 cells
+ * (or icosahedron face indexes), packaged as the right
+ * MobilityDB set type — `h3indexset` for cell collections, `intset`
+ * for the face index list.
+ *
+ * All functions here operate on STATIC `h3index` values — they
+ * are not lifted to the temporal `th3index` type. The temporal
+ * lift (producing a `tset<h3indexset>` or similar) is parked
+ * pending a `tset<T>` primitive design.
+ *
+ * libh3 is the ultimate authority for semantics; this file is a
+ * thin allocate / call / wrap layer:
+ *
+ *   size-query → palloc → libh3 fill → filter zeros → set_make_free.
+ */
+
+#ifndef __H3INDEX_SETS_H__
+#define __H3INDEX_SETS_H__
+
+/* PostgreSQL */
+#include <postgres.h>
+/* H3 */
+#include <h3api.h>
+/* MEOS */
+#include <meos.h>  /* Set typedef */
+#include "temporal/meos_catalog.h"
+
+/*****************************************************************************
+ * Set-returning h3 functions
+ *
+ * All functions below return a heap-allocated `Set *`. The caller
+ * owns the return. NULL is returned on libh3 failure after raising
+ * a `meos_error`.
+ *****************************************************************************/
+
+/**
+ * Return all cells within `k` grid steps of `origin` (including
+ * `origin` itself at k=0).
+ */
+extern Set *h3_grid_disk(H3Index origin, int k);
+
+/**
+ * Return all cells at exactly `k` grid steps from `origin`.
+ * Fails near pentagons (libh3's unsafe ring).
+ */
+extern Set *h3_grid_ring(H3Index origin, int k);
+
+/**
+ * Return the cells on the inclusive path from `start` to `end`.
+ * Fails on non-comparable resolutions or paths crossing pentagons.
+ */
+extern Set *h3_grid_path_cells(H3Index start, H3Index end);
+
+/**
+ * Return all children of `origin` at resolution `childRes`.
+ */
+extern Set *h3_cell_to_children(H3Index origin, int childRes);
+
+/**
+ * Return the compacted representation of `cells` (finer cells
+ * merged up into parents where the full hexagonal set of siblings
+ * is present).
+ */
+extern Set *h3_compact_cells(const Set *cells);
+
+/**
+ * Return the uncompacted representation of `cells` at resolution
+ * `res` (fails if any input is finer than `res`).
+ */
+extern Set *h3_uncompact_cells(const Set *cells, int res);
+
+/**
+ * Return all outgoing directed edges of `origin` (up to 6;
+ * pentagons have 5).
+ */
+extern Set *h3_origin_to_directed_edges(H3Index origin);
+
+/**
+ * Return all vertexes of `cell` (up to 6; pentagons have 5).
+ */
+extern Set *h3_cell_to_vertexes(H3Index cell);
+
+/**
+ * Return the icosahedron face indexes intersected by `cell` as
+ * an intset. Each face index is in 0..19.
+ */
+extern Set *h3_get_icosahedron_faces(H3Index cell);
+
+#endif /* __H3INDEX_SETS_H__ */
 extern int acovers_geo_tgeo(const GSERIALIZED *gs, const Temporal *temp);
 extern int acovers_tgeo_geo(const Temporal *temp, const GSERIALIZED *gs);
 extern int acovers_tgeo_tgeo(const Temporal *temp1, const Temporal *temp2);
@@ -4079,3 +4499,4 @@ extern Temporal **tnumber_value_split(const Temporal *temp, Datum vsize, Datum v
 extern Temporal **tnumber_value_time_split(const Temporal *temp, Datum size, const Interval *duration, Datum vorigin, TimestampTz torigin, Datum **value_bins, TimestampTz **time_bins, int *count);
 extern TBox *tnumber_value_time_boxes(const Temporal *temp, Datum vsize, const Interval *duration, Datum vorigin, TimestampTz torigin, int *count);
 extern TBox *tbox_get_value_time_tile(Datum value, TimestampTz t, Datum vsize, const Interval *duration, Datum vorigin, TimestampTz torigin, MeosType basetype, MeosType spantype);
+extern void meos_initialize_noexit_error_handler(void);

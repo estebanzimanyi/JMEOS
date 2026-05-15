@@ -186,6 +186,7 @@ public class FunctionsGenerator {
 		types.put("RTreeSearchOp", "int"); // enum in C
 		types.put("MeosType", "int"); // enum in C (raw int; callers do the lowering)
 		types.put("Datum", "long"); // = uint64; opaque payload; callers pack via Double.doubleToLongBits / .longValue
+		types.put("H3Index", "long"); // typedef uint64_t H3Index in libh3 h3api.h
 		types.put("error_handler_fn", "Pointer"); // function pointer in C
 		//types.put("\\char **","Pointer");
 		
@@ -441,7 +442,7 @@ public class FunctionsGenerator {
 				var conversionProcess = this.generateConversionProcess(line);
 				var conversionProcessList = BuilderUtils.extractPairValues(conversionProcess);
 				var conversionProcessContent = conversionProcessList.stream().flatMap(Collection::stream).toList();
-				
+
 				/* Generate the returning process */
 				var typesNamesList = BuilderUtils.extractPairKeys(conversionProcess);
 				var returnProcessContent = this.generateReturnProcess(line, typesNamesList);
