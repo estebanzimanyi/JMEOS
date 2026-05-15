@@ -39,6 +39,36 @@ import re
 import sys
 from pathlib import Path
 
+# The MeosLibrary surface is partitioned into N public-static sub-interfaces
+# (MeosLibraryPart0..N-1) to keep each JNR-FFI proxy <clinit> under the JVM
+# 64 KB limit. FunctionsGenerator writes the deterministic name->part map to
+# this sidecar; the wrappers rewritten below must dispatch to the same part
+# the interface declared the function on.
+PART_SIDECAR = Path(__file__).resolve().parent / "part_assignment.properties"
+
+
+def load_part_assignment() -> dict:
+    """function name -> sub-interface index, from the generator's sidecar."""
+    assignment = {}
+    if not PART_SIDECAR.exists():
+        raise SystemExit(
+            f"missing {PART_SIDECAR}; run FunctionsGenerator before this patch"
+        )
+    for line in PART_SIDECAR.read_text().splitlines():
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        name, _, idx = line.partition("=")
+        assignment[name.strip()] = int(idx.strip())
+    return assignment
+
+
+def dispatch_target(assignment: dict, name: str) -> str:
+    """e.g. MeosLibraryPart3.meos.rtree_search"""
+    if name not in assignment:
+        raise SystemExit(f"function {name!r} not in {PART_SIDECAR}")
+    return f"MeosLibraryPart{assignment[name]}.meos.{name}"
+
 # Out-param signatures of shape  bool foo(args, T *result)  — the wrapper
 # must return the buffer directly so the caller can read the value with
 # r.getDouble(0) / getInt(0) / getLong(0) / getByte(0).
@@ -82,23 +112,24 @@ OUT_PARAM_PATTERN = re.compile(
     r'boolean out;\s*'
     r'Runtime runtime = Runtime\.getSystemRuntime\(\);\s*'
     r'Pointer result = Memory\.allocateDirect\(runtime, Long\.BYTES\);\s*'
-    r'out = MeosLibrary\.meos\.\w+\(([^)]*)\);\s*'
+    r'out = MeosLibraryPart\d+\.meos\.\w+\(([^)]*)\);\s*'
     r'Pointer new_result = result\.getPointer\(0\);\s*'
     r'return out \? new_result : null ;\s*\}',
     re.DOTALL,
 )
 
 
-def patch_rtree(content: str) -> tuple[str, int]:
+def patch_rtree(content: str, assignment: dict) -> tuple[str, int]:
     def repl(m):
         name = m.group(1)
         first_param = m.group(2)
         third_param = m.group(3)
+        target = dispatch_target(assignment, name)
         return (
             f'@SuppressWarnings("unused")\n'
             f'\tpublic static int {name}(Pointer {first_param}, int op, '
             f'Pointer {third_param}, Pointer result) {{\n'
-            f'\t\treturn MeosLibrary.meos.{name}({first_param}, op, '
+            f'\t\treturn {target}({first_param}, op, '
             f'{third_param}, result);\n'
             f'\t}}'
         )
@@ -106,7 +137,7 @@ def patch_rtree(content: str) -> tuple[str, int]:
     return new, n
 
 
-def patch_out_params(content: str) -> tuple[str, int, int]:
+def patch_out_params(content: str, assignment: dict) -> tuple[str, int, int]:
     direct_count = 0
     indirect_count = 0
 
@@ -117,11 +148,12 @@ def patch_out_params(content: str) -> tuple[str, int, int]:
         call_args = m.group(3)
         if name in DIRECT:
             direct_count += 1
+            target = dispatch_target(assignment, name)
             return (
                 f'public static Pointer {name}({params}) {{\n'
                 f'\t\tRuntime runtime = Runtime.getSystemRuntime();\n'
                 f'\t\tPointer result = Memory.allocateDirect(runtime, 8);\n'
-                f'\t\tboolean out = MeosLibrary.meos.{name}({call_args});\n'
+                f'\t\tboolean out = {target}({call_args});\n'
                 f'\t\treturn out ? result : null;\n'
                 f'\t}}'
             )
@@ -137,9 +169,10 @@ def main() -> int:
         print(f"usage: {sys.argv[0]} <path-to-functions.java>", file=sys.stderr)
         return 2
     path = Path(sys.argv[1])
+    assignment = load_part_assignment()
     content = path.read_text()
-    content, rtree_n = patch_rtree(content)
-    content, direct, indirect = patch_out_params(content)
+    content, rtree_n = patch_rtree(content, assignment)
+    content, direct, indirect = patch_out_params(content, assignment)
     path.write_text(content)
     print(f"rtree wrappers patched:        {rtree_n}")
     print(f"out-param wrappers DIRECT:     {direct}")
