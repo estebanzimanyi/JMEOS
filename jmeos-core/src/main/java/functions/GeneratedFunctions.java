@@ -383,13 +383,13 @@ public class GeneratedFunctions {
 
 		int set_hash(Pointer s);
 
-		long set_hash_extended(Pointer s, long seed);
+		int set_hash_extended(Pointer s, int seed);
 
 		int set_num_values(Pointer s);
 
 		int span_hash(Pointer sp);
 
-		long span_hash_extended(Pointer sp, long seed);
+		int span_hash_extended(Pointer sp, int seed);
 
 		boolean span_lower_inc(Pointer sp);
 
@@ -399,7 +399,7 @@ public class GeneratedFunctions {
 
 		int spanset_hash(Pointer ss);
 
-		long spanset_hash_extended(Pointer ss, long seed);
+		int spanset_hash_extended(Pointer ss, int seed);
 
 		boolean spanset_lower_inc(Pointer ss);
 
@@ -1405,7 +1405,7 @@ public class GeneratedFunctions {
 
 		int tbox_hash(Pointer box);
 
-		long tbox_hash_extended(Pointer box, long seed);
+		int tbox_hash_extended(Pointer box, int seed);
 
 		boolean tbox_hast(Pointer box);
 
@@ -2211,10 +2211,6 @@ public class GeneratedFunctions {
 
 		Pointer tle_text_ttext(Pointer txt, Pointer temp);
 
-	}
-
-	public interface MeosLibraryPartB {
-
 		Pointer tle_tfloat_float(Pointer temp, double d);
 
 		Pointer tle_tint_int(Pointer temp, int i);
@@ -2252,6 +2248,10 @@ public class GeneratedFunctions {
 		Pointer tne_tint_int(Pointer temp, int i);
 
 		Pointer tne_ttext_text(Pointer temp, Pointer txt);
+
+	}
+
+	public interface MeosLibraryPartB {
 
 		Pointer temporal_spans(Pointer temp, Pointer count);
 
@@ -2857,9 +2857,13 @@ public class GeneratedFunctions {
 
 		boolean geom_disjoint2d(Pointer gs1, Pointer gs2);
 
+		boolean geom_dwithin(Pointer gs1, Pointer gs2, double tolerance);
+
 		boolean geom_dwithin2d(Pointer gs1, Pointer gs2, double tolerance);
 
 		boolean geom_dwithin3d(Pointer gs1, Pointer gs2, double tolerance);
+
+		boolean geom_intersects(Pointer gs1, Pointer gs2);
 
 		boolean geom_intersects2d(Pointer gs1, Pointer gs2);
 
@@ -2977,7 +2981,7 @@ public class GeneratedFunctions {
 
 		int stbox_hash(Pointer box);
 
-		long stbox_hash_extended(Pointer box, long seed);
+		int stbox_hash_extended(Pointer box, int seed);
 
 		boolean stbox_hast(Pointer box);
 
@@ -3603,7 +3607,7 @@ public class GeneratedFunctions {
 
 		int cbuffer_hash(Pointer cb);
 
-		long cbuffer_hash_extended(Pointer cb, long seed);
+		int cbuffer_hash_extended(Pointer cb, int seed);
 
 		Pointer cbuffer_point(Pointer cb);
 
@@ -4167,7 +4171,7 @@ public class GeneratedFunctions {
 
 		int datum_hash(Pointer d, int basetype);
 
-		long datum_hash_extended(Pointer d, int basetype, long seed);
+		int datum_hash_extended(Pointer d, int basetype, int seed);
 
 		Pointer datum_radians(Pointer d);
 
@@ -4411,10 +4415,6 @@ public class GeneratedFunctions {
 
 		Pointer distance_value_value(Pointer l, Pointer r, int basetype);
 
-	}
-
-	public interface MeosLibraryPartC {
-
 		Pointer spanbase_extent_transfn(Pointer state, Pointer value, int basetype);
 
 		Pointer value_union_transfn(Pointer state, Pointer value, int basetype);
@@ -4486,6 +4486,10 @@ public class GeneratedFunctions {
 		String tinstant_out(Pointer inst, int maxdd);
 
 		Pointer tbigintinst_from_mfjson(Pointer mfjson);
+
+	}
+
+	public interface MeosLibraryPartC {
 
 		Pointer tbigintinst_in(String str);
 
@@ -5164,8 +5168,6 @@ public class GeneratedFunctions {
 		int tcbuffersegm_intersection(Pointer start1, Pointer end1, Pointer start2, Pointer end2, long lower, long upper, Pointer t1, Pointer t2);
 
 		int tcbuffersegm_dwithin_turnpt(Pointer start1, Pointer end1, Pointer start2, Pointer end2, Pointer dist, long lower, long upper, Pointer t1, Pointer t2);
-
-		int tcbuffersegm_tdwithin_turnpt(Pointer start1, Pointer end1, Pointer start2, Pointer end2, Pointer dist, long lower, long upper, Pointer t1, Pointer t2);
 
 		int tcbuffersegm_distance_turnpt(Pointer start1, Pointer end1, Pointer start2, Pointer end2, Pointer dist);
 
@@ -5981,7 +5983,7 @@ public class GeneratedFunctions {
 
 		int jsonb_hash(Pointer jb);
 
-		long jsonb_hash_extended(Pointer jb, long seed);
+		int jsonb_hash_extended(Pointer jb, int seed);
 
 		Pointer jsonb_object_field(Pointer jb, Pointer key);
 
@@ -6611,10 +6613,6 @@ public class GeneratedFunctions {
 
 		Pointer tpointseqset_cumulative_length(Pointer ss);
 
-	}
-
-	public interface MeosLibraryPartD {
-
 		boolean tpointseqset_is_simple(Pointer ss);
 
 		double tpointseqset_length(Pointer ss);
@@ -6687,7 +6685,7 @@ public class GeneratedFunctions {
 
 		int npoint_hash(Pointer np);
 
-		long npoint_hash_extended(Pointer np, long seed);
+		int npoint_hash_extended(Pointer np, int seed);
 
 		double npoint_position(Pointer np);
 
@@ -6726,6 +6724,10 @@ public class GeneratedFunctions {
 		boolean npoint_ge(Pointer np1, Pointer np2);
 
 		boolean npoint_gt(Pointer np1, Pointer np2);
+
+	}
+
+	public interface MeosLibraryPartD {
 
 		boolean npoint_le(Pointer np1, Pointer np2);
 
@@ -6917,7 +6919,7 @@ public class GeneratedFunctions {
 
 		int pcpoint_hash(Pointer pt);
 
-		long pcpoint_hash_extended(Pointer pt, long seed);
+		int pcpoint_hash_extended(Pointer pt, int seed);
 
 		boolean pcpoint_get_x(Pointer pt, Pointer schema, Pointer out);
 
@@ -6969,7 +6971,7 @@ public class GeneratedFunctions {
 
 		int pcpatch_hash(Pointer pa);
 
-		long pcpatch_hash_extended(Pointer pa, long seed);
+		int pcpatch_hash_extended(Pointer pa, int seed);
 
 		int pcpatch_cmp(Pointer pa1, Pointer pa2);
 
@@ -7207,7 +7209,7 @@ public class GeneratedFunctions {
 
 		int pose_hash(Pointer pose);
 
-		long pose_hash_extended(Pointer pose, long seed);
+		int pose_hash_extended(Pointer pose, int seed);
 
 		Pointer pose_orientation(Pointer pose, Pointer count);
 
@@ -7410,6 +7412,92 @@ public class GeneratedFunctions {
 		Pointer tne_pose_tpose(Pointer pose, Pointer temp);
 
 		Pointer tne_tpose_pose(Pointer temp, Pointer pose);
+
+		boolean quadbin_is_valid_index(Pointer index);
+
+		boolean quadbin_is_valid_cell(Pointer cell);
+
+		Pointer quadbin_tile_to_cell(int x, int y, int z);
+
+		void quadbin_cell_to_tile(Pointer cell, Pointer x, Pointer y, Pointer z);
+
+		int quadbin_get_resolution(Pointer cell);
+
+		Pointer quadbin_cell_to_parent(Pointer cell, int parent_resolution);
+
+		Pointer quadbin_cell_to_children(Pointer cell, int children_resolution, Pointer count);
+
+		Pointer quadbin_cell_sibling(Pointer cell, String direction);
+
+		Pointer quadbin_k_ring(Pointer cell, int k, Pointer count);
+
+		Pointer quadbin_point_to_cell(double longitude, double latitude, int resolution);
+
+		void quadbin_cell_to_point(Pointer cell, Pointer longitude, Pointer latitude);
+
+		void quadbin_cell_to_bounding_box(Pointer cell, Pointer xmin, Pointer ymin, Pointer xmax, Pointer ymax);
+
+		double quadbin_cell_area(Pointer cell);
+
+		String quadbin_index_to_string(Pointer index);
+
+		Pointer quadbin_string_to_index(String str);
+
+		String quadbin_cell_to_quadkey(Pointer cell);
+
+		Pointer quadbin_parse(String str);
+
+		boolean quadbin_eq(Pointer a, Pointer b);
+
+		boolean quadbin_ne(Pointer a, Pointer b);
+
+		boolean quadbin_lt(Pointer a, Pointer b);
+
+		boolean quadbin_le(Pointer a, Pointer b);
+
+		boolean quadbin_gt(Pointer a, Pointer b);
+
+		boolean quadbin_ge(Pointer a, Pointer b);
+
+		int quadbin_cmp(Pointer a, Pointer b);
+
+		int quadbin_hash(Pointer cell);
+
+		Pointer quadbin_grid_disk(Pointer origin, int k);
+
+		Pointer quadbin_cell_to_children_set(Pointer origin, int children_resolution);
+
+		Pointer tquadbin_in(String str);
+
+		Pointer tquadbininst_in(String str);
+
+		Pointer tquadbinseq_in(String str, int interp);
+
+		Pointer tquadbinseqset_in(String str);
+
+		Pointer tquadbin_make(Pointer value, long t);
+
+		Pointer tquadbininst_make(Pointer value, long t);
+
+		Pointer tquadbinseq_make(Pointer values, Pointer times, int count, boolean lower_inc, boolean upper_inc);
+
+		Pointer tquadbinseqset_make(Pointer sequences, int count);
+
+		Pointer tquadbin_start_value(Pointer temp);
+
+		Pointer tquadbin_end_value(Pointer temp);
+
+		boolean tquadbin_value_n(Pointer temp, int n, Pointer result);
+
+		Pointer tquadbin_values(Pointer temp, Pointer count);
+
+		boolean tquadbin_value_at_timestamptz(Pointer temp, long t, boolean strict, Pointer result);
+
+		Pointer tbigint_to_tquadbin(Pointer temp);
+
+		Pointer tquadbin_to_tbigint(Pointer temp);
+
+		Pointer tquadbin_cell_to_quadkey(Pointer temp);
 
 		String trgeometry_out(Pointer temp);
 
@@ -7893,6 +7981,14 @@ public class GeneratedFunctions {
 
 		String text_to_cstring(Pointer txt);
 
+		boolean bool_in(String str);
+
+		String bool_out(boolean b);
+
+		double float8_in(String str);
+
+		String float8_out(double num, int maxdd);
+
 		Pointer text_in(String str);
 
 		String text_out(Pointer txt);
@@ -7936,6 +8032,48 @@ public class GeneratedFunctions {
 		long pg_timestamptz_in(String str, int typmod);
 
 		String timestamptz_out(long tstz);
+
+		int int32_cmp(int l, int r);
+
+		int int64_cmp(long l, long r);
+
+		double float8_exp(double num);
+
+		double float8_ln(double num);
+
+		double float8_log10(double num);
+
+		Pointer add_interval_interval(Pointer interv1, Pointer interv2);
+
+		Pointer mul_interval_double(Pointer interv, double factor);
+
+		int minus_date_date(int date1, int date2);
+
+		int minus_date_int(int date, int days);
+
+		long minus_timestamptz_interval(long tstz, Pointer interv);
+
+		Pointer minus_timestamptz_timestamptz(long tstz1, long tstz2);
+
+		long date_to_timestamp(int date);
+
+		long date_to_timestamptz(int date);
+
+		boolean ensure_valid_tquadbin_tquadbin(Pointer temp1, Pointer temp2);
+
+		boolean ensure_valid_tquadbin_quadbin(Pointer temp, Pointer cell);
+
+		boolean ensure_valid_tquadbin_tgeompoint(Pointer temp1, Pointer temp2);
+
+		Pointer datum2_quadbin_eq(Pointer d1, Pointer d2, int type);
+
+		Pointer datum2_quadbin_ne(Pointer d1, Pointer d2, int type);
+
+		void tquadbininst_set_stbox(Pointer inst, Pointer box);
+
+		void tquadbininstarr_set_stbox(Pointer instants, int count, Pointer box);
+
+		void tquadbinseq_expand_stbox(Pointer seq, Pointer inst);
 
 		boolean ensure_has_geom(short flags);
 
@@ -8312,6 +8450,22 @@ public class GeneratedFunctions {
 		int tbox_tmax_cmp(Pointer box1, Pointer box2);
 
 		int tbox_level_cmp(Pointer centroid, Pointer query, int level);
+
+		boolean tcellindex_type(int type);
+
+		Pointer dggs_cellops(int temptype);
+
+		Pointer tcellindex_get_resolution(Pointer temp);
+
+		Pointer tcellindex_is_valid_cell(Pointer temp);
+
+		Pointer tcellindex_cell_to_parent(Pointer temp, int resolution);
+
+		Pointer tcellindex_cell_to_point(Pointer temp);
+
+		Pointer tcellindex_cell_to_boundary(Pointer temp);
+
+		Pointer tcellindex_cell_area(Pointer temp);
 
 		Pointer datum_min_int32(Pointer l, Pointer r);
 
@@ -10132,7 +10286,7 @@ public class GeneratedFunctions {
 	}
 
 	@SuppressWarnings("unused")
-	public static long set_hash_extended(Pointer s, long seed) {
+	public static int set_hash_extended(Pointer s, int seed) {
 		var _result = _meos_a.set_hash_extended(s, seed);
 		MeosErrorHandler.checkError();
 		return _result;
@@ -10153,7 +10307,7 @@ public class GeneratedFunctions {
 	}
 
 	@SuppressWarnings("unused")
-	public static long span_hash_extended(Pointer sp, long seed) {
+	public static int span_hash_extended(Pointer sp, int seed) {
 		var _result = _meos_a.span_hash_extended(sp, seed);
 		MeosErrorHandler.checkError();
 		return _result;
@@ -10188,7 +10342,7 @@ public class GeneratedFunctions {
 	}
 
 	@SuppressWarnings("unused")
-	public static long spanset_hash_extended(Pointer ss, long seed) {
+	public static int spanset_hash_extended(Pointer ss, int seed) {
 		var _result = _meos_a.spanset_hash_extended(ss, seed);
 		MeosErrorHandler.checkError();
 		return _result;
@@ -13788,7 +13942,7 @@ public class GeneratedFunctions {
 	}
 
 	@SuppressWarnings("unused")
-	public static long tbox_hash_extended(Pointer box, long seed) {
+	public static int tbox_hash_extended(Pointer box, int seed) {
 		var _result = _meos_a.tbox_hash_extended(box, seed);
 		MeosErrorHandler.checkError();
 		return _result;
@@ -16702,133 +16856,133 @@ public class GeneratedFunctions {
 
 	@SuppressWarnings("unused")
 	public static Pointer tle_tfloat_float(Pointer temp, double d) {
-		var _result = _meos_b.tle_tfloat_float(temp, d);
+		var _result = _meos_a.tle_tfloat_float(temp, d);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tle_tint_int(Pointer temp, int i) {
-		var _result = _meos_b.tle_tint_int(temp, i);
+		var _result = _meos_a.tle_tint_int(temp, i);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tle_ttext_text(Pointer temp, Pointer txt) {
-		var _result = _meos_b.tle_ttext_text(temp, txt);
+		var _result = _meos_a.tle_ttext_text(temp, txt);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tlt_float_tfloat(double d, Pointer temp) {
-		var _result = _meos_b.tlt_float_tfloat(d, temp);
+		var _result = _meos_a.tlt_float_tfloat(d, temp);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tlt_int_tint(int i, Pointer temp) {
-		var _result = _meos_b.tlt_int_tint(i, temp);
+		var _result = _meos_a.tlt_int_tint(i, temp);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tlt_temporal_temporal(Pointer temp1, Pointer temp2) {
-		var _result = _meos_b.tlt_temporal_temporal(temp1, temp2);
+		var _result = _meos_a.tlt_temporal_temporal(temp1, temp2);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tlt_text_ttext(Pointer txt, Pointer temp) {
-		var _result = _meos_b.tlt_text_ttext(txt, temp);
+		var _result = _meos_a.tlt_text_ttext(txt, temp);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tlt_tfloat_float(Pointer temp, double d) {
-		var _result = _meos_b.tlt_tfloat_float(temp, d);
+		var _result = _meos_a.tlt_tfloat_float(temp, d);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tlt_tint_int(Pointer temp, int i) {
-		var _result = _meos_b.tlt_tint_int(temp, i);
+		var _result = _meos_a.tlt_tint_int(temp, i);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tlt_ttext_text(Pointer temp, Pointer txt) {
-		var _result = _meos_b.tlt_ttext_text(temp, txt);
+		var _result = _meos_a.tlt_ttext_text(temp, txt);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tne_bool_tbool(boolean b, Pointer temp) {
-		var _result = _meos_b.tne_bool_tbool(b, temp);
+		var _result = _meos_a.tne_bool_tbool(b, temp);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tne_float_tfloat(double d, Pointer temp) {
-		var _result = _meos_b.tne_float_tfloat(d, temp);
+		var _result = _meos_a.tne_float_tfloat(d, temp);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tne_int_tint(int i, Pointer temp) {
-		var _result = _meos_b.tne_int_tint(i, temp);
+		var _result = _meos_a.tne_int_tint(i, temp);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tne_tbool_bool(Pointer temp, boolean b) {
-		var _result = _meos_b.tne_tbool_bool(temp, b);
+		var _result = _meos_a.tne_tbool_bool(temp, b);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tne_temporal_temporal(Pointer temp1, Pointer temp2) {
-		var _result = _meos_b.tne_temporal_temporal(temp1, temp2);
+		var _result = _meos_a.tne_temporal_temporal(temp1, temp2);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tne_text_ttext(Pointer txt, Pointer temp) {
-		var _result = _meos_b.tne_text_ttext(txt, temp);
+		var _result = _meos_a.tne_text_ttext(txt, temp);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tne_tfloat_float(Pointer temp, double d) {
-		var _result = _meos_b.tne_tfloat_float(temp, d);
+		var _result = _meos_a.tne_tfloat_float(temp, d);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tne_tint_int(Pointer temp, int i) {
-		var _result = _meos_b.tne_tint_int(temp, i);
+		var _result = _meos_a.tne_tint_int(temp, i);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tne_ttext_text(Pointer temp, Pointer txt) {
-		var _result = _meos_b.tne_ttext_text(temp, txt);
+		var _result = _meos_a.tne_ttext_text(temp, txt);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
@@ -18976,6 +19130,13 @@ public class GeneratedFunctions {
 	}
 
 	@SuppressWarnings("unused")
+	public static boolean geom_dwithin(Pointer gs1, Pointer gs2, double tolerance) {
+		var _result = _meos_b.geom_dwithin(gs1, gs2, tolerance);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
 	public static boolean geom_dwithin2d(Pointer gs1, Pointer gs2, double tolerance) {
 		var _result = _meos_b.geom_dwithin2d(gs1, gs2, tolerance);
 		MeosErrorHandler.checkError();
@@ -18985,6 +19146,13 @@ public class GeneratedFunctions {
 	@SuppressWarnings("unused")
 	public static boolean geom_dwithin3d(Pointer gs1, Pointer gs2, double tolerance) {
 		var _result = _meos_b.geom_dwithin3d(gs1, gs2, tolerance);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static boolean geom_intersects(Pointer gs1, Pointer gs2) {
+		var _result = _meos_b.geom_intersects(gs1, gs2);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
@@ -19404,7 +19572,7 @@ public class GeneratedFunctions {
 	}
 
 	@SuppressWarnings("unused")
-	public static long stbox_hash_extended(Pointer box, long seed) {
+	public static int stbox_hash_extended(Pointer box, int seed) {
 		var _result = _meos_b.stbox_hash_extended(box, seed);
 		MeosErrorHandler.checkError();
 		return _result;
@@ -21662,7 +21830,7 @@ public class GeneratedFunctions {
 	}
 
 	@SuppressWarnings("unused")
-	public static long cbuffer_hash_extended(Pointer cb, long seed) {
+	public static int cbuffer_hash_extended(Pointer cb, int seed) {
 		var _result = _meos_b.cbuffer_hash_extended(cb, seed);
 		MeosErrorHandler.checkError();
 		return _result;
@@ -23652,7 +23820,7 @@ public class GeneratedFunctions {
 	}
 
 	@SuppressWarnings("unused")
-	public static long datum_hash_extended(Pointer d, int basetype, long seed) {
+	public static int datum_hash_extended(Pointer d, int basetype, int seed) {
 		var _result = _meos_b.datum_hash_extended(d, basetype, seed);
 		MeosErrorHandler.checkError();
 		return _result;
@@ -24500,21 +24668,21 @@ public class GeneratedFunctions {
 
 	@SuppressWarnings("unused")
 	public static Pointer spanbase_extent_transfn(Pointer state, Pointer value, int basetype) {
-		var _result = _meos_c.spanbase_extent_transfn(state, value, basetype);
+		var _result = _meos_b.spanbase_extent_transfn(state, value, basetype);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer value_union_transfn(Pointer state, Pointer value, int basetype) {
-		var _result = _meos_c.value_union_transfn(state, value, basetype);
+		var _result = _meos_b.value_union_transfn(state, value, basetype);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer number_tstzspan_to_tbox(Pointer d, int basetype, Pointer s) {
-		var _result = _meos_c.number_tstzspan_to_tbox(d, basetype, s);
+		var _result = _meos_b.number_tstzspan_to_tbox(d, basetype, s);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
@@ -24522,83 +24690,83 @@ public class GeneratedFunctions {
 	@SuppressWarnings("unused")
 	public static Pointer number_timestamptz_to_tbox(Pointer d, int basetype, OffsetDateTime t) {
 		var t_new = t.toEpochSecond();
-		var _result = _meos_c.number_timestamptz_to_tbox(d, basetype, t_new);
+		var _result = _meos_b.number_timestamptz_to_tbox(d, basetype, t_new);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static void tbox_set(Pointer s, Pointer p, Pointer result) {
-		_meos_c.tbox_set(s, p, result);
+		_meos_b.tbox_set(s, p, result);
 		MeosErrorHandler.checkError();
 	}
 
 	@SuppressWarnings("unused")
 	public static void float_set_tbox(double d, Pointer result) {
-		_meos_c.float_set_tbox(d, result);
+		_meos_b.float_set_tbox(d, result);
 		MeosErrorHandler.checkError();
 	}
 
 	@SuppressWarnings("unused")
 	public static void int_set_tbox(int i, Pointer result) {
-		_meos_c.int_set_tbox(i, result);
+		_meos_b.int_set_tbox(i, result);
 		MeosErrorHandler.checkError();
 	}
 
 	@SuppressWarnings("unused")
 	public static void number_set_tbox(Pointer d, int basetype, Pointer result) {
-		_meos_c.number_set_tbox(d, basetype, result);
+		_meos_b.number_set_tbox(d, basetype, result);
 		MeosErrorHandler.checkError();
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer number_tbox(Pointer value, int basetype) {
-		var _result = _meos_c.number_tbox(value, basetype);
+		var _result = _meos_b.number_tbox(value, basetype);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static void numset_set_tbox(Pointer s, Pointer result) {
-		_meos_c.numset_set_tbox(s, result);
+		_meos_b.numset_set_tbox(s, result);
 		MeosErrorHandler.checkError();
 	}
 
 	@SuppressWarnings("unused")
 	public static void numspan_set_tbox(Pointer span, Pointer result) {
-		_meos_c.numspan_set_tbox(span, result);
+		_meos_b.numspan_set_tbox(span, result);
 		MeosErrorHandler.checkError();
 	}
 
 	@SuppressWarnings("unused")
 	public static void timestamptz_set_tbox(OffsetDateTime t, Pointer result) {
 		var t_new = t.toEpochSecond();
-		_meos_c.timestamptz_set_tbox(t_new, result);
+		_meos_b.timestamptz_set_tbox(t_new, result);
 		MeosErrorHandler.checkError();
 	}
 
 	@SuppressWarnings("unused")
 	public static void tstzset_set_tbox(Pointer s, Pointer result) {
-		_meos_c.tstzset_set_tbox(s, result);
+		_meos_b.tstzset_set_tbox(s, result);
 		MeosErrorHandler.checkError();
 	}
 
 	@SuppressWarnings("unused")
 	public static void tstzspan_set_tbox(Pointer s, Pointer result) {
-		_meos_c.tstzspan_set_tbox(s, result);
+		_meos_b.tstzspan_set_tbox(s, result);
 		MeosErrorHandler.checkError();
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tbox_shift_scale_value(Pointer box, Pointer shift, Pointer width, boolean hasshift, boolean haswidth) {
-		var _result = _meos_c.tbox_shift_scale_value(box, shift, width, hasshift, haswidth);
+		var _result = _meos_b.tbox_shift_scale_value(box, shift, width, hasshift, haswidth);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static void tbox_expand(Pointer box1, Pointer box2) {
-		_meos_c.tbox_expand(box1, box2);
+		_meos_b.tbox_expand(box1, box2);
 		MeosErrorHandler.checkError();
 	}
 
@@ -24607,7 +24775,7 @@ public class GeneratedFunctions {
 		boolean out;
 		Runtime runtime = Runtime.getSystemRuntime();
 		Pointer result = Memory.allocateDirect(runtime, Long.BYTES);
-		out = _meos_c.inter_tbox_tbox(box1, box2, result);
+		out = _meos_b.inter_tbox_tbox(box1, box2, result);
 		Pointer new_result = result.getPointer(0);
 		MeosErrorHandler.checkError();
 		return out ? new_result : null;
@@ -24615,133 +24783,133 @@ public class GeneratedFunctions {
 
 	@SuppressWarnings("unused")
 	public static Pointer tboolinst_from_mfjson(Pointer mfjson) {
-		var _result = _meos_c.tboolinst_from_mfjson(mfjson);
+		var _result = _meos_b.tboolinst_from_mfjson(mfjson);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tboolinst_in(String str) {
-		var _result = _meos_c.tboolinst_in(str);
+		var _result = _meos_b.tboolinst_in(str);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tboolseq_from_mfjson(Pointer mfjson) {
-		var _result = _meos_c.tboolseq_from_mfjson(mfjson);
+		var _result = _meos_b.tboolseq_from_mfjson(mfjson);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tboolseq_in(String str, int interp) {
-		var _result = _meos_c.tboolseq_in(str, interp);
+		var _result = _meos_b.tboolseq_in(str, interp);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tboolseqset_from_mfjson(Pointer mfjson) {
-		var _result = _meos_c.tboolseqset_from_mfjson(mfjson);
+		var _result = _meos_b.tboolseqset_from_mfjson(mfjson);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tboolseqset_in(String str) {
-		var _result = _meos_c.tboolseqset_in(str);
+		var _result = _meos_b.tboolseqset_in(str);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer temporal_in(String str, int temptype) {
-		var _result = _meos_c.temporal_in(str, temptype);
+		var _result = _meos_b.temporal_in(str, temptype);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static String temporal_out(Pointer temp, int maxdd) {
-		var _result = _meos_c.temporal_out(temp, maxdd);
+		var _result = _meos_b.temporal_out(temp, maxdd);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer temparr_out(Pointer temparr, int count, int maxdd) {
-		var _result = _meos_c.temparr_out(temparr, count, maxdd);
+		var _result = _meos_b.temparr_out(temparr, count, maxdd);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tfloatinst_from_mfjson(Pointer mfjson) {
-		var _result = _meos_c.tfloatinst_from_mfjson(mfjson);
+		var _result = _meos_b.tfloatinst_from_mfjson(mfjson);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tfloatinst_in(String str) {
-		var _result = _meos_c.tfloatinst_in(str);
+		var _result = _meos_b.tfloatinst_in(str);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tfloatseq_from_mfjson(Pointer mfjson, int interp) {
-		var _result = _meos_c.tfloatseq_from_mfjson(mfjson, interp);
+		var _result = _meos_b.tfloatseq_from_mfjson(mfjson, interp);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tfloatseq_in(String str, int interp) {
-		var _result = _meos_c.tfloatseq_in(str, interp);
+		var _result = _meos_b.tfloatseq_in(str, interp);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tfloatseqset_from_mfjson(Pointer mfjson, int interp) {
-		var _result = _meos_c.tfloatseqset_from_mfjson(mfjson, interp);
+		var _result = _meos_b.tfloatseqset_from_mfjson(mfjson, interp);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tfloatseqset_in(String str) {
-		var _result = _meos_c.tfloatseqset_in(str);
+		var _result = _meos_b.tfloatseqset_in(str);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tinstant_from_mfjson(Pointer mfjson, boolean spatial, int srid, int temptype) {
-		var _result = _meos_c.tinstant_from_mfjson(mfjson, spatial, srid, temptype);
+		var _result = _meos_b.tinstant_from_mfjson(mfjson, spatial, srid, temptype);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tinstant_in(String str, int temptype) {
-		var _result = _meos_c.tinstant_in(str, temptype);
+		var _result = _meos_b.tinstant_in(str, temptype);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static String tinstant_out(Pointer inst, int maxdd) {
-		var _result = _meos_c.tinstant_out(inst, maxdd);
+		var _result = _meos_b.tinstant_out(inst, maxdd);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tbigintinst_from_mfjson(Pointer mfjson) {
-		var _result = _meos_c.tbigintinst_from_mfjson(mfjson);
+		var _result = _meos_b.tbigintinst_from_mfjson(mfjson);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
@@ -27154,15 +27322,6 @@ public class GeneratedFunctions {
 		var lower_new = lower.toEpochSecond();
 		var upper_new = upper.toEpochSecond();
 		var _result = _meos_c.tcbuffersegm_dwithin_turnpt(start1, end1, start2, end2, dist, lower_new, upper_new, t1, t2);
-		MeosErrorHandler.checkError();
-		return _result;
-	}
-
-	@SuppressWarnings("unused")
-	public static int tcbuffersegm_tdwithin_turnpt(Pointer start1, Pointer end1, Pointer start2, Pointer end2, Pointer dist, OffsetDateTime lower, OffsetDateTime upper, Pointer t1, Pointer t2) {
-		var lower_new = lower.toEpochSecond();
-		var upper_new = upper.toEpochSecond();
-		var _result = _meos_c.tcbuffersegm_tdwithin_turnpt(start1, end1, start2, end2, dist, lower_new, upper_new, t1, t2);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
@@ -30012,7 +30171,7 @@ public class GeneratedFunctions {
 	}
 
 	@SuppressWarnings("unused")
-	public static long jsonb_hash_extended(Pointer jb, long seed) {
+	public static int jsonb_hash_extended(Pointer jb, int seed) {
 		var _result = _meos_c.jsonb_hash_extended(jb, seed);
 		MeosErrorHandler.checkError();
 		return _result;
@@ -32234,116 +32393,116 @@ public class GeneratedFunctions {
 
 	@SuppressWarnings("unused")
 	public static boolean tpointseqset_is_simple(Pointer ss) {
-		var _result = _meos_d.tpointseqset_is_simple(ss);
+		var _result = _meos_c.tpointseqset_is_simple(ss);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static double tpointseqset_length(Pointer ss) {
-		var _result = _meos_d.tpointseqset_length(ss);
+		var _result = _meos_c.tpointseqset_length(ss);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tgeoseqset_stboxes(Pointer ss, Pointer count) {
-		var _result = _meos_d.tgeoseqset_stboxes(ss, count);
+		var _result = _meos_c.tgeoseqset_stboxes(ss, count);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tgeoseqset_split_n_stboxes(Pointer ss, int max_count, Pointer count) {
-		var _result = _meos_d.tgeoseqset_split_n_stboxes(ss, max_count, count);
+		var _result = _meos_c.tgeoseqset_split_n_stboxes(ss, max_count, count);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tgeominst_tgeoginst(Pointer inst, boolean oper) {
-		var _result = _meos_d.tgeominst_tgeoginst(inst, oper);
+		var _result = _meos_c.tgeominst_tgeoginst(inst, oper);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tgeomseq_tgeogseq(Pointer seq, boolean oper) {
-		var _result = _meos_d.tgeomseq_tgeogseq(seq, oper);
+		var _result = _meos_c.tgeomseq_tgeogseq(seq, oper);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tgeomseqset_tgeogseqset(Pointer ss, boolean oper) {
-		var _result = _meos_d.tgeomseqset_tgeogseqset(ss, oper);
+		var _result = _meos_c.tgeomseqset_tgeogseqset(ss, oper);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tgeom_tgeog(Pointer temp, boolean oper) {
-		var _result = _meos_d.tgeom_tgeog(temp, oper);
+		var _result = _meos_c.tgeom_tgeog(temp, oper);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tgeo_tpoint(Pointer temp, boolean oper) {
-		var _result = _meos_d.tgeo_tpoint(temp, oper);
+		var _result = _meos_c.tgeo_tpoint(temp, oper);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static void tspatialinst_set_srid(Pointer inst, int srid) {
-		_meos_d.tspatialinst_set_srid(inst, srid);
+		_meos_c.tspatialinst_set_srid(inst, srid);
 		MeosErrorHandler.checkError();
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tpointseq_make_simple(Pointer seq, Pointer count) {
-		var _result = _meos_d.tpointseq_make_simple(seq, count);
+		var _result = _meos_c.tpointseq_make_simple(seq, count);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static void tspatialseq_set_srid(Pointer seq, int srid) {
-		_meos_d.tspatialseq_set_srid(seq, srid);
+		_meos_c.tspatialseq_set_srid(seq, srid);
 		MeosErrorHandler.checkError();
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tpointseqset_make_simple(Pointer ss, Pointer count) {
-		var _result = _meos_d.tpointseqset_make_simple(ss, count);
+		var _result = _meos_c.tpointseqset_make_simple(ss, count);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static void tspatialseqset_set_srid(Pointer ss, int srid) {
-		_meos_d.tspatialseqset_set_srid(ss, srid);
+		_meos_c.tspatialseqset_set_srid(ss, srid);
 		MeosErrorHandler.checkError();
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tpointseq_twcentroid(Pointer seq) {
-		var _result = _meos_d.tpointseq_twcentroid(seq);
+		var _result = _meos_c.tpointseq_twcentroid(seq);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tpointseqset_twcentroid(Pointer ss) {
-		var _result = _meos_d.tpointseqset_twcentroid(ss);
+		var _result = _meos_c.tpointseqset_twcentroid(ss);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static String npoint_as_ewkt(Pointer np, int maxdd) {
-		var _result = _meos_d.npoint_as_ewkt(np, maxdd);
+		var _result = _meos_c.npoint_as_ewkt(np, maxdd);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
@@ -32352,14 +32511,14 @@ public class GeneratedFunctions {
 	public static String npoint_as_hexwkb(Pointer np, byte variant) {
 		Runtime runtime = Runtime.getSystemRuntime();
 		Pointer size_out = Memory.allocateDirect(runtime, Long.BYTES);
-		var _result = _meos_d.npoint_as_hexwkb(np, variant, size_out);
+		var _result = _meos_c.npoint_as_hexwkb(np, variant, size_out);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static String npoint_as_text(Pointer np, int maxdd) {
-		var _result = _meos_d.npoint_as_text(np, maxdd);
+		var _result = _meos_c.npoint_as_text(np, maxdd);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
@@ -32368,217 +32527,217 @@ public class GeneratedFunctions {
 	public static Pointer npoint_as_wkb(Pointer np, byte variant) {
 		Runtime runtime = Runtime.getSystemRuntime();
 		Pointer size_out = Memory.allocateDirect(runtime, Long.BYTES);
-		var _result = _meos_d.npoint_as_wkb(np, variant, size_out);
+		var _result = _meos_c.npoint_as_wkb(np, variant, size_out);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer npoint_from_hexwkb(String hexwkb) {
-		var _result = _meos_d.npoint_from_hexwkb(hexwkb);
+		var _result = _meos_c.npoint_from_hexwkb(hexwkb);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer npoint_from_wkb(Pointer wkb, long size) {
-		var _result = _meos_d.npoint_from_wkb(wkb, size);
+		var _result = _meos_c.npoint_from_wkb(wkb, size);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer npoint_in(String str) {
-		var _result = _meos_d.npoint_in(str);
+		var _result = _meos_c.npoint_in(str);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static String npoint_out(Pointer np, int maxdd) {
-		var _result = _meos_d.npoint_out(np, maxdd);
+		var _result = _meos_c.npoint_out(np, maxdd);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer nsegment_in(String str) {
-		var _result = _meos_d.nsegment_in(str);
+		var _result = _meos_c.nsegment_in(str);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static String nsegment_out(Pointer ns, int maxdd) {
-		var _result = _meos_d.nsegment_out(ns, maxdd);
+		var _result = _meos_c.nsegment_out(ns, maxdd);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer npoint_make(long rid, double pos) {
-		var _result = _meos_d.npoint_make(rid, pos);
+		var _result = _meos_c.npoint_make(rid, pos);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer nsegment_make(long rid, double pos1, double pos2) {
-		var _result = _meos_d.nsegment_make(rid, pos1, pos2);
+		var _result = _meos_c.nsegment_make(rid, pos1, pos2);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer geompoint_to_npoint(Pointer gs) {
-		var _result = _meos_d.geompoint_to_npoint(gs);
+		var _result = _meos_c.geompoint_to_npoint(gs);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer geom_to_nsegment(Pointer gs) {
-		var _result = _meos_d.geom_to_nsegment(gs);
+		var _result = _meos_c.geom_to_nsegment(gs);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer npoint_to_geompoint(Pointer np) {
-		var _result = _meos_d.npoint_to_geompoint(np);
+		var _result = _meos_c.npoint_to_geompoint(np);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer npoint_to_nsegment(Pointer np) {
-		var _result = _meos_d.npoint_to_nsegment(np);
+		var _result = _meos_c.npoint_to_nsegment(np);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer npoint_to_stbox(Pointer np) {
-		var _result = _meos_d.npoint_to_stbox(np);
+		var _result = _meos_c.npoint_to_stbox(np);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer nsegment_to_geom(Pointer ns) {
-		var _result = _meos_d.nsegment_to_geom(ns);
+		var _result = _meos_c.nsegment_to_geom(ns);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer nsegment_to_stbox(Pointer ns) {
-		var _result = _meos_d.nsegment_to_stbox(ns);
+		var _result = _meos_c.nsegment_to_stbox(ns);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static int npoint_hash(Pointer np) {
-		var _result = _meos_d.npoint_hash(np);
+		var _result = _meos_c.npoint_hash(np);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
-	public static long npoint_hash_extended(Pointer np, long seed) {
-		var _result = _meos_d.npoint_hash_extended(np, seed);
+	public static int npoint_hash_extended(Pointer np, int seed) {
+		var _result = _meos_c.npoint_hash_extended(np, seed);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static double npoint_position(Pointer np) {
-		var _result = _meos_d.npoint_position(np);
+		var _result = _meos_c.npoint_position(np);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static long npoint_route(Pointer np) {
-		var _result = _meos_d.npoint_route(np);
+		var _result = _meos_c.npoint_route(np);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static double nsegment_end_position(Pointer ns) {
-		var _result = _meos_d.nsegment_end_position(ns);
+		var _result = _meos_c.nsegment_end_position(ns);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static long nsegment_route(Pointer ns) {
-		var _result = _meos_d.nsegment_route(ns);
+		var _result = _meos_c.nsegment_route(ns);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static double nsegment_start_position(Pointer ns) {
-		var _result = _meos_d.nsegment_start_position(ns);
+		var _result = _meos_c.nsegment_start_position(ns);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static boolean route_exists(long rid) {
-		var _result = _meos_d.route_exists(rid);
+		var _result = _meos_c.route_exists(rid);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer route_geom(long rid) {
-		var _result = _meos_d.route_geom(rid);
+		var _result = _meos_c.route_geom(rid);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static double route_length(long rid) {
-		var _result = _meos_d.route_length(rid);
+		var _result = _meos_c.route_length(rid);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer npoint_round(Pointer np, int maxdd) {
-		var _result = _meos_d.npoint_round(np, maxdd);
+		var _result = _meos_c.npoint_round(np, maxdd);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer nsegment_round(Pointer ns, int maxdd) {
-		var _result = _meos_d.nsegment_round(ns, maxdd);
+		var _result = _meos_c.nsegment_round(ns, maxdd);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static int get_srid_ways() {
-		var _result = _meos_d.get_srid_ways();
+		var _result = _meos_c.get_srid_ways();
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static int npoint_srid(Pointer np) {
-		var _result = _meos_d.npoint_srid(np);
+		var _result = _meos_c.npoint_srid(np);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static int nsegment_srid(Pointer ns) {
-		var _result = _meos_d.nsegment_srid(ns);
+		var _result = _meos_c.nsegment_srid(ns);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
@@ -32586,42 +32745,42 @@ public class GeneratedFunctions {
 	@SuppressWarnings("unused")
 	public static Pointer npoint_timestamptz_to_stbox(Pointer np, OffsetDateTime t) {
 		var t_new = t.toEpochSecond();
-		var _result = _meos_d.npoint_timestamptz_to_stbox(np, t_new);
+		var _result = _meos_c.npoint_timestamptz_to_stbox(np, t_new);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer npoint_tstzspan_to_stbox(Pointer np, Pointer s) {
-		var _result = _meos_d.npoint_tstzspan_to_stbox(np, s);
+		var _result = _meos_c.npoint_tstzspan_to_stbox(np, s);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static int npoint_cmp(Pointer np1, Pointer np2) {
-		var _result = _meos_d.npoint_cmp(np1, np2);
+		var _result = _meos_c.npoint_cmp(np1, np2);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static boolean npoint_eq(Pointer np1, Pointer np2) {
-		var _result = _meos_d.npoint_eq(np1, np2);
+		var _result = _meos_c.npoint_eq(np1, np2);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static boolean npoint_ge(Pointer np1, Pointer np2) {
-		var _result = _meos_d.npoint_ge(np1, np2);
+		var _result = _meos_c.npoint_ge(np1, np2);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static boolean npoint_gt(Pointer np1, Pointer np2) {
-		var _result = _meos_d.npoint_gt(np1, np2);
+		var _result = _meos_c.npoint_gt(np1, np2);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
@@ -33306,7 +33465,7 @@ public class GeneratedFunctions {
 	}
 
 	@SuppressWarnings("unused")
-	public static long pcpoint_hash_extended(Pointer pt, long seed) {
+	public static int pcpoint_hash_extended(Pointer pt, int seed) {
 		var _result = _meos_d.pcpoint_hash_extended(pt, seed);
 		MeosErrorHandler.checkError();
 		return _result;
@@ -33485,7 +33644,7 @@ public class GeneratedFunctions {
 	}
 
 	@SuppressWarnings("unused")
-	public static long pcpatch_hash_extended(Pointer pa, long seed) {
+	public static int pcpatch_hash_extended(Pointer pa, int seed) {
 		var _result = _meos_d.pcpatch_hash_extended(pa, seed);
 		MeosErrorHandler.checkError();
 		return _result;
@@ -34355,7 +34514,7 @@ public class GeneratedFunctions {
 	}
 
 	@SuppressWarnings("unused")
-	public static long pose_hash_extended(Pointer pose, long seed) {
+	public static int pose_hash_extended(Pointer pose, int seed) {
 		var _result = _meos_d.pose_hash_extended(pose, seed);
 		MeosErrorHandler.checkError();
 		return _result;
@@ -35078,6 +35237,315 @@ public class GeneratedFunctions {
 	@SuppressWarnings("unused")
 	public static Pointer tne_tpose_pose(Pointer temp, Pointer pose) {
 		var _result = _meos_d.tne_tpose_pose(temp, pose);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static boolean quadbin_is_valid_index(Pointer index) {
+		var _result = _meos_d.quadbin_is_valid_index(index);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static boolean quadbin_is_valid_cell(Pointer cell) {
+		var _result = _meos_d.quadbin_is_valid_cell(cell);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer quadbin_tile_to_cell(int x, int y, int z) {
+		var _result = _meos_d.quadbin_tile_to_cell(x, y, z);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static void quadbin_cell_to_tile(Pointer cell, Pointer x, Pointer y, Pointer z) {
+		_meos_d.quadbin_cell_to_tile(cell, x, y, z);
+		MeosErrorHandler.checkError();
+	}
+
+	@SuppressWarnings("unused")
+	public static int quadbin_get_resolution(Pointer cell) {
+		var _result = _meos_d.quadbin_get_resolution(cell);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer quadbin_cell_to_parent(Pointer cell, int parent_resolution) {
+		var _result = _meos_d.quadbin_cell_to_parent(cell, parent_resolution);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer quadbin_cell_to_children(Pointer cell, int children_resolution, Pointer count) {
+		var _result = _meos_d.quadbin_cell_to_children(cell, children_resolution, count);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer quadbin_cell_sibling(Pointer cell, String direction) {
+		var _result = _meos_d.quadbin_cell_sibling(cell, direction);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer quadbin_k_ring(Pointer cell, int k, Pointer count) {
+		var _result = _meos_d.quadbin_k_ring(cell, k, count);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer quadbin_point_to_cell(double longitude, double latitude, int resolution) {
+		var _result = _meos_d.quadbin_point_to_cell(longitude, latitude, resolution);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static void quadbin_cell_to_point(Pointer cell, Pointer longitude, Pointer latitude) {
+		_meos_d.quadbin_cell_to_point(cell, longitude, latitude);
+		MeosErrorHandler.checkError();
+	}
+
+	@SuppressWarnings("unused")
+	public static void quadbin_cell_to_bounding_box(Pointer cell, Pointer xmin, Pointer ymin, Pointer xmax, Pointer ymax) {
+		_meos_d.quadbin_cell_to_bounding_box(cell, xmin, ymin, xmax, ymax);
+		MeosErrorHandler.checkError();
+	}
+
+	@SuppressWarnings("unused")
+	public static double quadbin_cell_area(Pointer cell) {
+		var _result = _meos_d.quadbin_cell_area(cell);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static String quadbin_index_to_string(Pointer index) {
+		var _result = _meos_d.quadbin_index_to_string(index);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer quadbin_string_to_index(String str) {
+		var _result = _meos_d.quadbin_string_to_index(str);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static String quadbin_cell_to_quadkey(Pointer cell) {
+		var _result = _meos_d.quadbin_cell_to_quadkey(cell);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer quadbin_parse(String str) {
+		var _result = _meos_d.quadbin_parse(str);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static boolean quadbin_eq(Pointer a, Pointer b) {
+		var _result = _meos_d.quadbin_eq(a, b);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static boolean quadbin_ne(Pointer a, Pointer b) {
+		var _result = _meos_d.quadbin_ne(a, b);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static boolean quadbin_lt(Pointer a, Pointer b) {
+		var _result = _meos_d.quadbin_lt(a, b);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static boolean quadbin_le(Pointer a, Pointer b) {
+		var _result = _meos_d.quadbin_le(a, b);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static boolean quadbin_gt(Pointer a, Pointer b) {
+		var _result = _meos_d.quadbin_gt(a, b);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static boolean quadbin_ge(Pointer a, Pointer b) {
+		var _result = _meos_d.quadbin_ge(a, b);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static int quadbin_cmp(Pointer a, Pointer b) {
+		var _result = _meos_d.quadbin_cmp(a, b);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static int quadbin_hash(Pointer cell) {
+		var _result = _meos_d.quadbin_hash(cell);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer quadbin_grid_disk(Pointer origin, int k) {
+		var _result = _meos_d.quadbin_grid_disk(origin, k);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer quadbin_cell_to_children_set(Pointer origin, int children_resolution) {
+		var _result = _meos_d.quadbin_cell_to_children_set(origin, children_resolution);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer tquadbin_in(String str) {
+		var _result = _meos_d.tquadbin_in(str);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer tquadbininst_in(String str) {
+		var _result = _meos_d.tquadbininst_in(str);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer tquadbinseq_in(String str, int interp) {
+		var _result = _meos_d.tquadbinseq_in(str, interp);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer tquadbinseqset_in(String str) {
+		var _result = _meos_d.tquadbinseqset_in(str);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer tquadbin_make(Pointer value, OffsetDateTime t) {
+		var t_new = t.toEpochSecond();
+		var _result = _meos_d.tquadbin_make(value, t_new);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer tquadbininst_make(Pointer value, OffsetDateTime t) {
+		var t_new = t.toEpochSecond();
+		var _result = _meos_d.tquadbininst_make(value, t_new);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer tquadbinseq_make(Pointer values, Pointer times, int count, boolean lower_inc, boolean upper_inc) {
+		var _result = _meos_d.tquadbinseq_make(values, times, count, lower_inc, upper_inc);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer tquadbinseqset_make(Pointer sequences, int count) {
+		var _result = _meos_d.tquadbinseqset_make(sequences, count);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer tquadbin_start_value(Pointer temp) {
+		var _result = _meos_d.tquadbin_start_value(temp);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer tquadbin_end_value(Pointer temp) {
+		var _result = _meos_d.tquadbin_end_value(temp);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer tquadbin_value_n(Pointer temp, int n) {
+		boolean out;
+		Runtime runtime = Runtime.getSystemRuntime();
+		Pointer result = Memory.allocateDirect(runtime, Long.BYTES);
+		out = _meos_d.tquadbin_value_n(temp, n, result);
+		Pointer new_result = result.getPointer(0);
+		MeosErrorHandler.checkError();
+		return out ? new_result : null;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer tquadbin_values(Pointer temp, Pointer count) {
+		var _result = _meos_d.tquadbin_values(temp, count);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer tquadbin_value_at_timestamptz(Pointer temp, OffsetDateTime t, boolean strict) {
+		boolean out;
+		Runtime runtime = Runtime.getSystemRuntime();
+		Pointer result = Memory.allocateDirect(runtime, Long.BYTES);
+		var t_new = t.toEpochSecond();
+		out = _meos_d.tquadbin_value_at_timestamptz(temp, t_new, strict, result);
+		Pointer new_result = result.getPointer(0);
+		MeosErrorHandler.checkError();
+		return out ? new_result : null;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer tbigint_to_tquadbin(Pointer temp) {
+		var _result = _meos_d.tbigint_to_tquadbin(temp);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer tquadbin_to_tbigint(Pointer temp) {
+		var _result = _meos_d.tquadbin_to_tbigint(temp);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer tquadbin_cell_to_quadkey(Pointer temp) {
+		var _result = _meos_d.tquadbin_cell_to_quadkey(temp);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
@@ -36773,6 +37241,34 @@ public class GeneratedFunctions {
 	}
 
 	@SuppressWarnings("unused")
+	public static boolean bool_in(String str) {
+		var _result = _meos_d.bool_in(str);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static String bool_out(boolean b) {
+		var _result = _meos_d.bool_out(b);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static double float8_in(String str) {
+		var _result = _meos_d.float8_in(str);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static String float8_out(double num, int maxdd) {
+		var _result = _meos_d.float8_out(num, maxdd);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
 	public static Pointer text_in(String str) {
 		var _result = _meos_d.text_in(str);
 		MeosErrorHandler.checkError();
@@ -36927,6 +37423,153 @@ public class GeneratedFunctions {
 		var _result = _meos_d.timestamptz_out(tstz_new);
 		MeosErrorHandler.checkError();
 		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static int int32_cmp(int l, int r) {
+		var _result = _meos_d.int32_cmp(l, r);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static int int64_cmp(long l, long r) {
+		var _result = _meos_d.int64_cmp(l, r);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static double float8_exp(double num) {
+		var _result = _meos_d.float8_exp(num);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static double float8_ln(double num) {
+		var _result = _meos_d.float8_ln(num);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static double float8_log10(double num) {
+		var _result = _meos_d.float8_log10(num);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer add_interval_interval(Pointer interv1, Pointer interv2) {
+		var _result = _meos_d.add_interval_interval(interv1, interv2);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer mul_interval_double(Pointer interv, double factor) {
+		var _result = _meos_d.mul_interval_double(interv, factor);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static int minus_date_date(int date1, int date2) {
+		var _result = _meos_d.minus_date_date(date1, date2);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static int minus_date_int(int date, int days) {
+		var _result = _meos_d.minus_date_int(date, days);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static OffsetDateTime minus_timestamptz_interval(OffsetDateTime tstz, Pointer interv) {
+		var tstz_new = tstz.toEpochSecond();
+		var _result = _meos_d.minus_timestamptz_interval(tstz_new, interv);
+		MeosErrorHandler.checkError();
+		return java.time.Instant.ofEpochSecond(_result).atOffset(java.time.ZoneOffset.UTC);
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer minus_timestamptz_timestamptz(OffsetDateTime tstz1, OffsetDateTime tstz2) {
+		var tstz1_new = tstz1.toEpochSecond();
+		var tstz2_new = tstz2.toEpochSecond();
+		var _result = _meos_d.minus_timestamptz_timestamptz(tstz1_new, tstz2_new);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static LocalDateTime date_to_timestamp(int date) {
+		var _result = _meos_d.date_to_timestamp(date);
+		MeosErrorHandler.checkError();
+		return java.time.LocalDateTime.ofInstant(java.time.Instant.ofEpochSecond(_result), java.time.ZoneOffset.UTC);
+	}
+
+	@SuppressWarnings("unused")
+	public static OffsetDateTime date_to_timestamptz(int date) {
+		var _result = _meos_d.date_to_timestamptz(date);
+		MeosErrorHandler.checkError();
+		return java.time.Instant.ofEpochSecond(_result).atOffset(java.time.ZoneOffset.UTC);
+	}
+
+	@SuppressWarnings("unused")
+	public static boolean ensure_valid_tquadbin_tquadbin(Pointer temp1, Pointer temp2) {
+		var _result = _meos_d.ensure_valid_tquadbin_tquadbin(temp1, temp2);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static boolean ensure_valid_tquadbin_quadbin(Pointer temp, Pointer cell) {
+		var _result = _meos_d.ensure_valid_tquadbin_quadbin(temp, cell);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static boolean ensure_valid_tquadbin_tgeompoint(Pointer temp1, Pointer temp2) {
+		var _result = _meos_d.ensure_valid_tquadbin_tgeompoint(temp1, temp2);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer datum2_quadbin_eq(Pointer d1, Pointer d2, int type) {
+		var _result = _meos_d.datum2_quadbin_eq(d1, d2, type);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer datum2_quadbin_ne(Pointer d1, Pointer d2, int type) {
+		var _result = _meos_d.datum2_quadbin_ne(d1, d2, type);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static void tquadbininst_set_stbox(Pointer inst, Pointer box) {
+		_meos_d.tquadbininst_set_stbox(inst, box);
+		MeosErrorHandler.checkError();
+	}
+
+	@SuppressWarnings("unused")
+	public static void tquadbininstarr_set_stbox(Pointer instants, int count, Pointer box) {
+		_meos_d.tquadbininstarr_set_stbox(instants, count, box);
+		MeosErrorHandler.checkError();
+	}
+
+	@SuppressWarnings("unused")
+	public static void tquadbinseq_expand_stbox(Pointer seq, Pointer inst) {
+		_meos_d.tquadbinseq_expand_stbox(seq, inst);
+		MeosErrorHandler.checkError();
 	}
 
 	@SuppressWarnings("unused")
@@ -38228,6 +38871,62 @@ public class GeneratedFunctions {
 	@SuppressWarnings("unused")
 	public static int tbox_level_cmp(Pointer centroid, Pointer query, int level) {
 		var _result = _meos_d.tbox_level_cmp(centroid, query, level);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static boolean tcellindex_type(int type) {
+		var _result = _meos_d.tcellindex_type(type);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer dggs_cellops(int temptype) {
+		var _result = _meos_d.dggs_cellops(temptype);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer tcellindex_get_resolution(Pointer temp) {
+		var _result = _meos_d.tcellindex_get_resolution(temp);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer tcellindex_is_valid_cell(Pointer temp) {
+		var _result = _meos_d.tcellindex_is_valid_cell(temp);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer tcellindex_cell_to_parent(Pointer temp, int resolution) {
+		var _result = _meos_d.tcellindex_cell_to_parent(temp, resolution);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer tcellindex_cell_to_point(Pointer temp) {
+		var _result = _meos_d.tcellindex_cell_to_point(temp);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer tcellindex_cell_to_boundary(Pointer temp) {
+		var _result = _meos_d.tcellindex_cell_to_boundary(temp);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer tcellindex_cell_area(Pointer temp) {
+		var _result = _meos_d.tcellindex_cell_area(temp);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
