@@ -2249,11 +2249,11 @@ public class GeneratedFunctions {
 
 		Pointer tne_ttext_text(Pointer temp, Pointer txt);
 
+		Pointer temporal_spans(Pointer temp, Pointer count);
+
 	}
 
 	public interface MeosLibraryPartB {
-
-		Pointer temporal_spans(Pointer temp, Pointer count);
 
 		Pointer temporal_split_each_n_spans(Pointer temp, int elem_count, Pointer count);
 
@@ -4487,13 +4487,13 @@ public class GeneratedFunctions {
 
 		Pointer tbigintinst_from_mfjson(Pointer mfjson);
 
-	}
-
-	public interface MeosLibraryPartC {
-
 		Pointer tbigintinst_in(String str);
 
 		Pointer tbigintseq_from_mfjson(Pointer mfjson);
+
+	}
+
+	public interface MeosLibraryPartC {
 
 		Pointer tbigintseqset_from_mfjson(Pointer mfjson);
 
@@ -6725,15 +6725,15 @@ public class GeneratedFunctions {
 
 		boolean npoint_gt(Pointer np1, Pointer np2);
 
-	}
-
-	public interface MeosLibraryPartD {
-
 		boolean npoint_le(Pointer np1, Pointer np2);
 
 		boolean npoint_lt(Pointer np1, Pointer np2);
 
 		boolean npoint_ne(Pointer np1, Pointer np2);
+
+	}
+
+	public interface MeosLibraryPartD {
 
 		boolean npoint_same(Pointer np1, Pointer np2);
 
@@ -7164,6 +7164,12 @@ public class GeneratedFunctions {
 		boolean overafter_tpcbox_tpcbox(Pointer box1, Pointer box2);
 
 		boolean ensure_same_pcid_tpcbox(Pointer box1, Pointer box2);
+
+		Pointer tpointcloudinst_make(Pointer pt, long t);
+
+		boolean eintersects_tpcpoint_geo(Pointer temp, Pointer gs);
+
+		double nad_tpcpoint_geo(Pointer temp, Pointer gs);
 
 		String pose_as_ewkt(Pointer pose, int maxdd);
 
@@ -16989,7 +16995,7 @@ public class GeneratedFunctions {
 
 	@SuppressWarnings("unused")
 	public static Pointer temporal_spans(Pointer temp, Pointer count) {
-		var _result = _meos_b.temporal_spans(temp, count);
+		var _result = _meos_a.temporal_spans(temp, count);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
@@ -24916,14 +24922,14 @@ public class GeneratedFunctions {
 
 	@SuppressWarnings("unused")
 	public static Pointer tbigintinst_in(String str) {
-		var _result = _meos_c.tbigintinst_in(str);
+		var _result = _meos_b.tbigintinst_in(str);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static Pointer tbigintseq_from_mfjson(Pointer mfjson) {
-		var _result = _meos_c.tbigintseq_from_mfjson(mfjson);
+		var _result = _meos_b.tbigintseq_from_mfjson(mfjson);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
@@ -32787,21 +32793,21 @@ public class GeneratedFunctions {
 
 	@SuppressWarnings("unused")
 	public static boolean npoint_le(Pointer np1, Pointer np2) {
-		var _result = _meos_d.npoint_le(np1, np2);
+		var _result = _meos_c.npoint_le(np1, np2);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static boolean npoint_lt(Pointer np1, Pointer np2) {
-		var _result = _meos_d.npoint_lt(np1, np2);
+		var _result = _meos_c.npoint_lt(np1, np2);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
 
 	@SuppressWarnings("unused")
 	public static boolean npoint_ne(Pointer np1, Pointer np2) {
-		var _result = _meos_d.npoint_ne(np1, np2);
+		var _result = _meos_c.npoint_ne(np1, np2);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
@@ -34353,6 +34359,28 @@ public class GeneratedFunctions {
 	@SuppressWarnings("unused")
 	public static boolean ensure_same_pcid_tpcbox(Pointer box1, Pointer box2) {
 		var _result = _meos_d.ensure_same_pcid_tpcbox(box1, box2);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static Pointer tpointcloudinst_make(Pointer pt, OffsetDateTime t) {
+		var t_new = t.toEpochSecond();
+		var _result = _meos_d.tpointcloudinst_make(pt, t_new);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static boolean eintersects_tpcpoint_geo(Pointer temp, Pointer gs) {
+		var _result = _meos_d.eintersects_tpcpoint_geo(temp, gs);
+		MeosErrorHandler.checkError();
+		return _result;
+	}
+
+	@SuppressWarnings("unused")
+	public static double nad_tpcpoint_geo(Pointer temp, Pointer gs) {
+		var _result = _meos_d.nad_tpcpoint_geo(temp, gs);
 		MeosErrorHandler.checkError();
 		return _result;
 	}
