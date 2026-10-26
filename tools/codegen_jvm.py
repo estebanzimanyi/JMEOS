@@ -672,7 +672,8 @@ class SqlModel:
         # Spark arm sizes them by: the rows of a set-returning signature and a contiguous array
         # of structs (#_array_arg) read them, on both engines.
         spark = _spark_module()
-        spark.STRUCTS.update({s['name']: s for s in cat.get('structs') or []})
+        self.structs = {s['name']: s for s in cat.get('structs') or []}
+        spark.STRUCTS.update(self.structs)
         self.layout = lambda name: (spark.struct_layout(name)  # noqa: E731
                                     if name in spark.STRUCTS else None)
         self.enc = cat.get('typeEncodings', {})
@@ -1400,6 +1401,13 @@ def _setret_column(m, f, col, layout):
         if lay is None or col['field'] not in lay[2]:
             return None
         off, ctype = lay[2][col['field']]
+        declared = next((x['cType'] for x in (m.structs.get(elem) or {}).get('fields') or ()
+                         if x['name'] == col['field']), '')
+        if sql == 'text' and declared.replace(' ', '') == 'constchar*':
+            # A C string the structure points to and owns (the name of a GeoPose frame in
+            # the static table geopose_frames answers), read and never freed.
+            return ('String', src, f'MeosSqlRuntime.orNull({{a}}.getPointer((long) _i * '
+                    f'{lay[0]}L + {off}L), _s -> _s.getString(0L))', False)
         if _norm(ctype).endswith('*'):                # a pointer field: a value of its own
             b, vc = _norm(ctype)[:-1].strip(), m.value_class.get(sql)
             if not vc or m.sql_cbase.get(sql) not in (b, m.subtype_of.get(b)):
@@ -1849,7 +1857,10 @@ def _setret_overload(m, f, sig, jsig, bound, layout):
         if r[3]:
             body.append(_free_each(r, cells))
     body += [f'    MeosSqlRuntime.free({c}.getPointer(0L));' for c in cells.values()]
-    body += ['    MeosSqlRuntime.free(_r);', '}']
+    # A const array is MEOS's own (the static table geopose_frames answers): never freed.
+    if not f['returnType']['canonical'].startswith('const '):
+        body.append('    MeosSqlRuntime.free(_r);')
+    body.append('}')
     return (params, temps, f'{ecls}[]', body, m.array_type(etype)), None
 
 
